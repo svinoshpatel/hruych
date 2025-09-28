@@ -6,16 +6,30 @@ import { Pool } from 'pg';
 const app = express();
 const port = 3000;
 
-const images = [
-	'/uploads/2b-arch-wallpaper-no-text.png',
-	'/uploads/cosmos.png',
-	'/uploads/deer.jpg',
-	'/uploads/goatskull.png',
-	'/uploads/man.jpg',
-	'/uploads/moth.jpg',
-	'/uploads/spider.jpg',
-	'/uploads/woman.jpg',
-];
+function getRelativeTime(date) {
+	const now = new Date();
+	const endTime = new Date(date);
+
+	const diffInSeconds = Math.floor((endTime - now) / 1000);
+	const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+	if (Math.abs(diffInSeconds) < 60) {
+		return rtf.format(diffInSeconds, 'second');
+	};
+	
+	const diffInMinutes = Math.floor(diffInSeconds / 60);
+	if (Math.abs(diffInMinutes) < 60) {
+		return rtf.format(diffInMinutes, 'minute');
+	};
+
+	const diffInHours = Math.floor(diffInMinutes / 60);
+	if (Math.abs(diffInHours) < 24) {
+		return rtf.format(diffInHours, 'hour');
+	};
+
+	const diffInDays = Math.floor(diffInHours / 24);
+		return rtf.format(diffInDays, 'day');
+};
 
 const pool = new Pool({
 	host: 'localhost',
@@ -62,8 +76,15 @@ app.get('/api/auction/', async (_, res) => {
 		client.release();
 
 		if (result.rows.length === 0) {
-			// No auctions message!
+			// "No auctions" message!
 		};
+
+		result.rows.forEach(auction => {
+			const endTime = auction.end_time;
+			const relativeTime = getRelativeTime(endTime);
+			auction.end_time = relativeTime;
+		});
+
 		res.status(200).json(result.rows);
 	} catch (error) {
 		console.error(error);

@@ -13,7 +13,7 @@ CREATE TABLE auction(
 	start_time TIMESTAMP,
 	end_time TIMESTAMP,
 	CONSTRAINT fk_account 
-		FOREIGN KEY (author_id) REFERENCES account(id)
+		FOREIGN KEY (author_id) REFERENCES account(id) ON DELETE CASCADE
 );
 
 CREATE TABLE bid(
@@ -23,7 +23,7 @@ CREATE TABLE bid(
 	price NUMERIC(12, 0) NOT NULL,
 	bid_time TIMESTAMP DEFAULT NOW(),
 	CONSTRAINT fk_auction
-		FOREIGN KEY (auction_id) REFERENCES auction(id),
+		FOREIGN KEY (auction_id) REFERENCES auction(id) ON DELETE CASCADE,
 	CONSTRAINT fk_account
-		FOREIGN KEY (account_id) REFERENCES account(id)
+		FOREIGN KEY (account_id) REFERENCES account(id) ON DELETE RESTRICT
 );
