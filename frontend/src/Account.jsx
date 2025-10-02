@@ -135,7 +135,8 @@ export default function Account() {
 						${isAuctionActive ? 'rounded-tr-xl' : 'rounded-tl-xl'}`
 					}
 				>
-					<AuctionList auctions={auctions}/>
+					{isAuctionActive ? <AuctionList auctions={auctions} /> :
+						<div />}
 				</div>
 			</div>
 		</>
