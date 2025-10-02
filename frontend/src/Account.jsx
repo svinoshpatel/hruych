@@ -43,14 +43,17 @@ export default function Account() {
 				<div className="flex">
 					<button
 						onClick={handleFollow}
-						className="
-							w-3/4
+						className={
+							`w-3/4
 							ml-10 mr-2 mt-5 py-1
 							bg-mocha-blue
-							bg-linear-to-r from-mocha-blue to-mocha-sky
 							rounded-full
-							text-mocha-crust font-bold
-						"
+							 font-bold
+							${isFollowed ? 'bg-mocha-mantle outline-mocha-overlay0 outline-1' :
+								`bg-linear-to-r from-mocha-blue to-mocha-sky
+								text-mocha-crust`
+							}`
+						}
 					>
 						{isFollowed ? 'Following' : 'Follow'}
 					</button>
@@ -66,17 +69,6 @@ export default function Account() {
 						<MessageIcon />
 					</button>
 				</div>
-				{/* Bio */}
-				<div className="bg-mocha-mantle mx-5 mt-5 rounded-xl">
-					<p
-						className="
-							p-2
-							text-mocha-subtext1 text-sm
-						"
-					>
-						Character sheets | Emotes | Illustrations | Vtuber Models | 
-					</p>
-				</div>
 				{/* Socials */}
 				<div className="text-center mt-5">
 					<a className="mx-5">
@@ -89,6 +81,18 @@ export default function Account() {
 						Tiktok
 					</a>
 				</div>
+				{/* Bio */}
+				<div className="bg-mocha-mantle mx-5 mt-5 rounded-xl">
+					<p
+						className="
+							p-2
+							text-mocha-subtext1 text-sm
+						"
+					>
+						Character sheets | Emotes | Illustrations | Vtuber Models | 
+					</p>
+				</div>
+				{/* Tabs */}
 				<div className="h-1 mt-5 bg-mocha-mantle" />
 				<div className="mt-5 mx-5 flex justify-evenly">
 					<button
