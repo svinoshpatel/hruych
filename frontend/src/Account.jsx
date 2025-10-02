@@ -1,11 +1,26 @@
 import { useState } from "react";
 import ProfilePic from "./components/ProfilePic";
 import MessageIcon from "./assets/MessageIcon";
+import AuctionList from "./components/AuctionList";
+import { useLoaderData } from "react-router";
+
+export async function loader() {
+	const [account, auctions] = await Promise.all([
+		fetch(`http://localhost:3000/api/account/6`)
+			.then(r => r.json()),
+		fetch(`http://localhost:3000/api/account/6/auction`)
+			.then(r => r.json()),
+	]);
+
+	return { account, auctions };
+};
 
 export default function Account() {
 	const [isFollowed, setIsFollowed] = useState(false);
 	const [isAuctionActive, setIsAuctionActive] = useState(true);
 	const [isPortfolioActive, setIsPortfolioActive] = useState(false);
+
+	const { account, auctions } = useLoaderData();
 
 	function handleFollow() {
 		setIsFollowed(!isFollowed);
@@ -120,6 +135,7 @@ export default function Account() {
 						${isAuctionActive ? 'rounded-tr-xl' : 'rounded-tl-xl'}`
 					}
 				>
+					<AuctionList auctions={auctions}/>
 				</div>
 			</div>
 		</>
