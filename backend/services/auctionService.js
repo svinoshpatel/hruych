@@ -29,3 +29,22 @@ export async function getAllAuctions() {
 		client.release();
 	};
 };
+
+export async function getAuctionsByAccountId(accountId) {
+	const client = await pool.connect();
+	try {
+		const result = await client.query(
+			'SELECT * FROM auction WHERE author_id = $1',
+			[accountId],
+		);
+
+		result.rows.forEach(auction => {
+			auction.end_time = getRelativeTime(auction.end_time);
+		});
+
+		return result.rows;
+	} finally {
+		client.release();
+	};
+};
+
