@@ -117,7 +117,7 @@ export default function Account() {
 							${isAuctionActive ? 'bg-mocha-mantle' : ''}`	
 						}
 					>
-						Auction
+						Auctions
 					</button>
 					<button
 						onClick={handleOpenPortfolio}
