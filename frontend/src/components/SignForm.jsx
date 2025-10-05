@@ -93,10 +93,29 @@ export default function SignForm({ setShowAuthPrompt }) {
 										text-mocha-subtext0
 									'
 								>
+									Display name
+								</h2>
+								<input
+									placeholder="Diplay name"
+									className="
+										py-2 px-4
+										bg-mocha-mantle
+										rounded-lg
+										focus:outline-none
+									"
+								/>
+							</div>
+							<div className='flex flex-col mx-5 mt-2'>
+								<h2
+									className='
+										mb-1 ml-1 text-sm
+										text-mocha-subtext0
+									'
+								>
 									Username
 								</h2>
 								<input
-									placeholder="Username"
+									placeholder="@username"
 									className="
 										py-2 px-4
 										bg-mocha-mantle
@@ -116,6 +135,36 @@ export default function SignForm({ setShowAuthPrompt }) {
 								</h2>
 								<input
 									placeholder="your@email.com"
+									className="
+										py-2 px-4
+										bg-mocha-mantle
+										rounded-lg
+										focus:outline-none
+									"
+								/>
+							</div>
+							<div className='flex flex-col mx-5 mt-5'>
+								<h2
+									className='
+										mb-1 ml-1 text-sm
+										text-mocha-subtext0
+									'
+								>
+									Password
+								</h2>
+								<input
+									placeholder="Password"
+									className="
+										py-2 px-4
+										bg-mocha-mantle
+										rounded-lg
+										focus:outline-none
+									"
+								/>
+							</div>
+							<div className='flex flex-col mx-5 mt-2'>
+								<input
+									placeholder="Confirm password"
 									className="
 										py-2 px-4
 										bg-mocha-mantle
