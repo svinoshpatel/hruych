@@ -14,8 +14,8 @@ export default function CloseIcon() {
 					d="
 						M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001
 					"
-					stroke-linecap="round"
-					stroke-linejoin="round"
+					strokeLinecap="round"
+					strokeLinejoin="round"
 				/>
 			</g>
 		</svg>

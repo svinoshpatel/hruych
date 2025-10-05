@@ -8,6 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use(express.json());
 app.use('/api', routes);
 app.use(errorHandler);
 

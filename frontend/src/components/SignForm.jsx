@@ -2,7 +2,47 @@ import { useState } from 'react';
 import CloseIcon from '../assets/CloseIcon';
 
 export default function SignForm({ setShowAuthPrompt }) {
-	const [showSignIn, setShowSignIn] = useState(false);
+	const [showSignIn, setShowSignIn] = useState(true);
+	const [displayName, setDisplayName] = useState('');
+	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+
+	async function handleRegisterSubmit(event) {
+		event.preventDefault();
+
+		if (password !== confirmPassword) {
+			alert('Passwords don\'t match');
+			return;
+		};
+
+		const payload = {
+			displayName,
+			username,
+			email,
+			password
+		};
+
+		try {
+			const response = await fetch(
+				'http://localhost:3000/api/auth/signup', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			});
+
+			if (!response.ok) {
+				const error = await response.text();
+				throw new Error(error || 'Failed to register');
+			};
+
+			setShowAuthPrompt(false);
+		} catch (error) {
+			console.error(error);
+			alert('Registration failed ' + error.message);
+		};
+	};
 
 	return(
 		<>
@@ -81,11 +121,13 @@ export default function SignForm({ setShowAuthPrompt }) {
 					</div>
 				)
 				: (
-					<div>
+					<form onSubmit={handleRegisterSubmit}>
 						<h1 className="ml-5 mt-3 font-bold text-2xl">
 							Create account
 						</h1>
+
 						<div className="flex flex-col justify-center">
+							{/* Display Name */}
 							<div className='flex flex-col mx-5 mt-5'>
 								<h2
 									className='
@@ -96,15 +138,22 @@ export default function SignForm({ setShowAuthPrompt }) {
 									Display name
 								</h2>
 								<input
+									type='text'
 									placeholder="Diplay name"
+									value={displayName}
+									onChange={(e) =>
+										setDisplayName(e.target.value)}
 									className="
 										py-2 px-4
 										bg-mocha-mantle
 										rounded-lg
 										focus:outline-none
 									"
+									required
 								/>
 							</div>
+
+							{/* Username */}
 							<div className='flex flex-col mx-5 mt-2'>
 								<h2
 									className='
@@ -115,15 +164,22 @@ export default function SignForm({ setShowAuthPrompt }) {
 									Username
 								</h2>
 								<input
+									type='text'
 									placeholder="@username"
+									value={username}
+									onChange={(e) =>
+										setUsername(e.target.value)}
 									className="
 										py-2 px-4
 										bg-mocha-mantle
 										rounded-lg
 										focus:outline-none
 									"
+									required
 								/>
 							</div>
+
+							{/* Email */}
 							<div className='flex flex-col mx-5 mt-5'>
 								<h2
 									className='
@@ -134,15 +190,22 @@ export default function SignForm({ setShowAuthPrompt }) {
 									Email
 								</h2>
 								<input
+									type='email'
 									placeholder="your@email.com"
+									value={email}
+									onChange={(e) =>
+										setEmail(e.target.value)}
 									className="
 										py-2 px-4
 										bg-mocha-mantle
 										rounded-lg
 										focus:outline-none
 									"
+									required
 								/>
 							</div>
+
+							{/* Password */}
 							<div className='flex flex-col mx-5 mt-5'>
 								<h2
 									className='
@@ -153,27 +216,41 @@ export default function SignForm({ setShowAuthPrompt }) {
 									Password
 								</h2>
 								<input
+									type='password'
 									placeholder="Password"
+									value={password}
+									onChange={(e) =>
+										setPassword(e.target.value)}
 									className="
 										py-2 px-4
 										bg-mocha-mantle
 										rounded-lg
 										focus:outline-none
 									"
+									required
 								/>
 							</div>
+
+							{/* Confirm Password */}
 							<div className='flex flex-col mx-5 mt-2'>
 								<input
+									type='password'
 									placeholder="Confirm password"
+									value={confirmPassword}
+									onChange={(e) =>
+										setConfirmPassword(e.target.value)}
 									className="
 										py-2 px-4
 										bg-mocha-mantle
 										rounded-lg
 										focus:outline-none
 									"
+									required
 								/>
 							</div>
+
 							<button
+								type='submit'
 								className='
 									mt-5 mx-10 py-1
 									bg-mocha-blue
@@ -185,11 +262,13 @@ export default function SignForm({ setShowAuthPrompt }) {
 							>
 								Create Account
 							</button>
+
 							<div className="flex justify-center mb-5 mt-7">
 								<span className="text-mocha-subtext1">
 									Already have an account?
 								</span>
 								<button
+									type='button'
 									onClick={() => setShowSignIn(true)}
 									className="ml-3 font-bold"
 								>
@@ -197,10 +276,10 @@ export default function SignForm({ setShowAuthPrompt }) {
 								</button>
 							</div>
 						</div>
-					</div>
+					</form>
 				)}
-
 			</div>
+
 			<div className="
 				top-0 h-screen w-screen 
 				z-1 fixed bg-mocha-overlay0 opacity-80
