@@ -4,6 +4,7 @@ import HomeIcon from './assets/HomeIcon';
 import ChatIcon from './assets/ChatIcon';
 import NotificationsIcon from "./assets/NotificationsIcon";
 import ProfilePic from "./components/ProfilePic";
+import ChatNavItem from "./components/ChatNavItem";
 
 export default function Navbar() {
 	return(
@@ -38,15 +39,7 @@ export default function Navbar() {
 					>
 						<NotificationsIcon />
 					</NavLink>
-					<NavLink
-						to='/chat' end
-						className='
-							inline-flex flex-col items-center justify-center
-							px-5
-						'
-					>
-						<ChatIcon />
-					</NavLink>
+					<ChatNavItem isAuthorized={false} />
 					<NavLink
 						to='/account/6' end
 						className='

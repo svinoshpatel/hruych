@@ -64,7 +64,7 @@ export default function Account() {
 							bg-mocha-blue
 							rounded-full
 							 font-bold
-							${isFollowed ? 'bg-mocha-mantle outline-mocha-overlay0 outline-1' :
+							${isFollowed ? 'bg-mocha-mantle' :
 								`bg-linear-to-r from-mocha-blue to-mocha-sky
 								text-mocha-crust`
 							}`
