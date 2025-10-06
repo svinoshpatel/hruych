@@ -8,6 +8,8 @@ export default function SignForm({ setShowAuthPrompt }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
+	const [usernameOrEmail, setUsernameOrEmail] = useState('');
+	const [loginPassword, setLoginPassword] = useState('');
 
 	async function handleRegisterSubmit(event) {
 		event.preventDefault();
@@ -44,6 +46,34 @@ export default function SignForm({ setShowAuthPrompt }) {
 		};
 	};
 
+	async function handleLoginSubmit(event) {
+		event.preventDefault();
+
+		const payload = {
+			usernameOrEmail,
+			loginPassword
+		};
+
+		try {
+			const response = await fetch(
+				'http://localhost:3000/api/auth/signin', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			});
+
+			if (!response.ok) {
+				const error = await response.text();
+				throw new Error(error || 'Failed to login');
+			};
+
+			setShowAuthPrompt(false);
+		} catch (error) {
+			console.error(error);
+			alert('Registration failed ' + error.message);
+		};
+	};
+
 	return(
 		<>
 			<div className="
@@ -65,36 +95,51 @@ export default function SignForm({ setShowAuthPrompt }) {
 					</button>
 				</div>
 				{showSignIn ? (
-					<div>
+					<form>
 						<h1 className="ml-5 mt-3 font-bold text-2xl">
 							Log in with email
 						</h1>
 						<div className="flex flex-col justify-center">
 							<input
-								placeholder="Username or email"
+								type='text'
+								placeholder="@username or email"
+								value={usernameOrEmail}
+								onChange={(e) =>
+									setUsernameOrEmail(e.target.value)}
 								className="
 									mx-5 mt-5 py-2 px-4
 									bg-mocha-mantle
 									rounded-lg
 									focus:outline-none
 								"
+								required
 							/>
 							<input
+								type='password'
 								placeholder="Password"
+								value={loginPassword}
+								onChange={(e) =>
+									setLoginPassword(e.target.value)}
 								className="
 									mx-5 mt-2 py-2 px-4
 									bg-mocha-mantle
 									rounded-lg
 									focus:outline-none
 								"
+								required
 							/>
-							<span className='
-								text-right mr-5 text-sm mt-1 text-mocha-subtext0
+							<button
+								type='button'
+								className='
+									text-right mr-5 text-sm
+									mt-1 text-mocha-subtext0
 								'
 							>
 								Forgot password?
-							</span>
+							</button>
 							<button
+								type='submit'
+								onClick={handleLoginSubmit}
 								className='
 									mt-5 mx-10 py-1
 									bg-mocha-blue
@@ -111,6 +156,7 @@ export default function SignForm({ setShowAuthPrompt }) {
 									Don't have an account yet?
 								</span>
 								<button
+									type='button'
 									onClick={() => setShowSignIn(false)}
 									className="ml-3 font-bold"
 								>
@@ -118,7 +164,7 @@ export default function SignForm({ setShowAuthPrompt }) {
 								</button>
 							</div>
 						</div>
-					</div>
+					</form>
 				)
 				: (
 					<form onSubmit={handleRegisterSubmit}>
