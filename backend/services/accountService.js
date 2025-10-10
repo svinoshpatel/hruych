@@ -13,3 +13,4 @@ export async function getAccountById(accountId) {
 		client.release();
 	};
 };
+
