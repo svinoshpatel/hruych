@@ -7,6 +7,7 @@ import Navbar from './Navbar.jsx';
 import Account, { loader as accountLoader } from './Account.jsx';
 import { RouterProvider } from 'react-router';
 import { createBrowserRouter } from 'react-router';
+import { AccountProvider } from './AccountContext';
 
 const router = createBrowserRouter([
 	{
@@ -15,13 +16,15 @@ const router = createBrowserRouter([
 		children: [
 			{ path: '/', Component: App, loader: auctionsLoader },
 			{ path: '/auction/:id', Component: Auction, loader: auctionLoader },
-			{ path: '/account/6', Component: Account, loader: accountLoader },
+			{ path: '/account/me', Component: Account, loader: accountLoader },
 		]
 	}
 ]);
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<RouterProvider router={router} />
+		<AccountProvider>
+			<RouterProvider router={router} />
+		</AccountProvider>
 	</StrictMode>,
 )

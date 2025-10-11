@@ -1,12 +1,15 @@
 import { Outlet } from "react-router";
 import { NavLink } from "react-router";
 import HomeIcon from './assets/HomeIcon';
-import ChatIcon from './assets/ChatIcon';
 import NotificationsIcon from "./assets/NotificationsIcon";
 import ProfilePic from "./components/ProfilePic";
 import ChatNavItem from "./components/ChatNavItem";
+import { useContext } from "react";
+import { AccountContext } from "./AccountContext";
 
 export default function Navbar() {
+	const { account } = useContext(AccountContext);
+
 	return(
 		<>
 			<Outlet />
@@ -41,7 +44,7 @@ export default function Navbar() {
 					</NavLink>
 					<ChatNavItem isAuthorized={false} />
 					<NavLink
-						to='/account/6' end
+						to='/account/me' end
 						className='
 							inline-flex flex-col items-center justify-center
 							px-5
@@ -51,6 +54,7 @@ export default function Navbar() {
 							className='
 								size-8 outline-mocha-text outline-2
 							'
+							src={account}
 						/>
 					</NavLink>
 				</div>

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import CloseIcon from '../assets/CloseIcon';
+import { AccountContext } from '../AccountContext';
 
 export default function SignForm({ setShowAuthPrompt }) {
 	const [showSignIn, setShowSignIn] = useState(true);
@@ -10,6 +11,7 @@ export default function SignForm({ setShowAuthPrompt }) {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [usernameOrEmail, setUsernameOrEmail] = useState('');
 	const [loginPassword, setLoginPassword] = useState('');
+	const { setAccount } = useContext(AccountContext);
 
 	async function handleRegisterSubmit(event) {
 		event.preventDefault();
@@ -58,6 +60,7 @@ export default function SignForm({ setShowAuthPrompt }) {
 			const response = await fetch(
 				'http://localhost:3000/api/auth/signin', {
 				method: 'POST',
+				credentials: 'include',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload),
 			});
@@ -68,9 +71,11 @@ export default function SignForm({ setShowAuthPrompt }) {
 			};
 
 			setShowAuthPrompt(false);
+			const { image } = await response.json();
+			setAccount(image);
 		} catch (error) {
 			console.error(error);
-			alert('Registration failed ' + error.message);
+			alert('Login failed ' + error.message);
 		};
 	};
 

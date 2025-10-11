@@ -6,10 +6,12 @@ import { useLoaderData } from "react-router";
 
 export async function loader() {
 	const [account, auctions] = await Promise.all([
-		fetch(`http://localhost:3000/api/account/6`)
-			.then(r => r.json()),
-		fetch(`http://localhost:3000/api/account/6/auction`)
-			.then(r => r.json()),
+		fetch(`http://localhost:3000/api/account/me`, {
+			credentials: 'include',
+		}).then(r => r.json()),
+		fetch(`http://localhost:3000/api/account/me/auction`, {
+			credentials: 'include',
+		}).then(r => r.json()),
 	]);
 
 	return { account, auctions };
@@ -44,14 +46,20 @@ export default function Account() {
 		<>
 			<div className='bg-mocha-crust h-50 relative'>
 				<div className="absolute top-35 left-10">
-					<ProfilePic className='size-30' />
+					<ProfilePic className='size-30' src={account.image} />
 				</div>
 			</div>
 			<div className="flex flex-col">
 				<h1 className="text-right mr-10 mt-2 text-2xl font-bold">
-					Svinoshpatel
+					{account.display_name}
 				</h1>
-				<h2 className="text-right mr-10 mt-1 text-xs text-mocha-subtext0">
+				<h2 className="text-right mr-10 text-xs text-mocha-subtext0">
+					@{account.username}
+				</h2>
+				<h2 className="
+						text-right mr-10 mt-1 text-xs text-mocha-subtext0
+					"
+				>
 					Local time 3:19 PM
 				</h2>
 				{/* Buttons */}
