@@ -29,8 +29,8 @@ export async function signin(req, res, next) {
 		const token = await authService.signin(usernameOrEmail, loginPassword);
 		res.cookie('token', token, {
 			httpOnly: true,
-			secure: true,
-			sameSite: 'Strict',
+			secure: false,
+			sameSite: 'lax',
 			maxAge: 3600000,
 			path: '/'
 		});

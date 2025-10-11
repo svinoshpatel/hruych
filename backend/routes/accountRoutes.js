@@ -6,6 +6,7 @@ import * as auctionController from '../controllers/auctionController.js';
 const router = express.Router();
 
 router.get('/me', authHandler, accountController.getSelfProfile);
+router.get('/me/auction', auctionController.getSelfAuctions);
 router.get('/:id', accountController.getAccountById);
 router.get('/:id/auction', auctionController.getAuctionsByAccountId);
 

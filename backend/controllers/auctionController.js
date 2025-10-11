@@ -32,3 +32,13 @@ export async function getAuctionsByAccountId(req, res, next) {
 		next(error);
 	};
 };
+
+export async function getSelfAuctions(req, res, next) {
+	try {
+		const accountId = req.accountId;
+		const auctions = await auctionService.getAuctionsByAccountId(accountId);
+		return res.status(200).json(auctions);
+	} catch (error) {
+		next(error);
+	};
+};

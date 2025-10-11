@@ -16,7 +16,7 @@ export async function getAccountById(req, res, next) {
 
 export async function getSelfProfile(req, res, next) {
 	try {
-		const accountId = req.accountId
+		const accountId = req.accountId;
 		const account = await accountService.getAccountById(accountId);
 
 		if (!account)
