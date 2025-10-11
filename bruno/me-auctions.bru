@@ -1,0 +1,15 @@
+meta {
+  name: me/auctions
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:3000/api/account/me/auction
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
