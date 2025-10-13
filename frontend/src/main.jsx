@@ -8,6 +8,7 @@ import Account, { loader as accountLoader } from './Account.jsx';
 import { RouterProvider } from 'react-router';
 import { createBrowserRouter } from 'react-router';
 import { AccountProvider } from './AccountContext';
+import CreateAuction from './CreateAuction.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
 			{ path: '/', Component: App, loader: auctionsLoader },
 			{ path: '/auction/:id', Component: Auction, loader: auctionLoader },
 			{ path: '/account/me', Component: Account, loader: accountLoader },
+			{ path: '/auction/create', Component: CreateAuction },
 		]
 	}
 ]);

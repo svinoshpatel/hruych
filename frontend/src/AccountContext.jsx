@@ -5,9 +5,15 @@ export const AccountContext = createContext(null);
 
 export function AccountProvider({ children }) {
 	const [account, setAccount] = useState(accountPng);
+	const [authorized, setAuthorized] = useState(false);
 
 	return(
-		<AccountContext.Provider value={{ account, setAccount }}>
+		<AccountContext.Provider value={{
+			account,
+			setAccount,
+			authorized,
+			setAuthorized
+		}}>
 			{children}
 		</AccountContext.Provider>
 	);

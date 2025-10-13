@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import ChatIcon from "../assets/ChatIcon";
 import SignForm from "./SignForm";
+import ProfilePic from "./ProfilePic";
+import { useContext } from "react";
+import { AccountContext } from "../AccountContext";
 
-export default function ChatNavItem({ isAuthorized }) {
+export default function ProfileNavItem({ isAuthorized }) {
 	const navigate = useNavigate();
 	const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+	const { account } = useContext(AccountContext);
 
 	function handleClick() {
 		if (isAuthorized) {
-			navigate('/chat');
+			navigate('/account/me');
 		} else {
 			setShowAuthPrompt(true);
 		};
@@ -25,7 +28,12 @@ export default function ChatNavItem({ isAuthorized }) {
 					px-5
 				'
 			>
-				<ChatIcon />
+				<ProfilePic
+					className='
+						size-8 outline-mocha-text outline-2
+					'
+					src={account}
+				/>
 			</button>
 			{showAuthPrompt && (
 				<SignForm setShowAuthPrompt={setShowAuthPrompt} />
@@ -33,3 +41,4 @@ export default function ChatNavItem({ isAuthorized }) {
 		</>
 	);
 };
+

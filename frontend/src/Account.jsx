@@ -3,6 +3,7 @@ import ProfilePic from "./components/ProfilePic";
 import MessageIcon from "./assets/MessageIcon";
 import AuctionList from "./components/AuctionList";
 import { useLoaderData } from "react-router";
+import AddItemButton from "./components/AddItemButton";
 
 export async function loader() {
 	const [account, auctions] = await Promise.all([
@@ -147,6 +148,7 @@ export default function Account() {
 						<div />}
 				</div>
 			</div>
+			<AddItemButton />
 		</>
 	);
 };
