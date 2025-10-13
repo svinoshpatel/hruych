@@ -26,7 +26,8 @@ export async function signup(req, res, next) {
 export async function signin(req, res, next) {
 	try {
 		const { usernameOrEmail, loginPassword } = req.body;
-		const token = await authService.signin(usernameOrEmail, loginPassword);
+		const { token, image } = await authService
+			.signin(usernameOrEmail, loginPassword);
 		res.cookie('token', token, {
 			httpOnly: true,
 			secure: false,
@@ -34,7 +35,7 @@ export async function signin(req, res, next) {
 			maxAge: 3600000,
 			path: '/'
 		});
-		res.status(200).json({ message: token });
+		res.status(200).json({ image });
 	} catch (error) {
 		res.status(401).json({ error: error.message });
 	};

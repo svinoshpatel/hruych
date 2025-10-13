@@ -22,7 +22,7 @@ export async function signin(usernameOrEmail, loginPassword) {
 	const client = await pool.connect();
 	try {
 		const response = await client.query(
-			`SELECT id, password FROM account
+			`SELECT id, password, image FROM account
 			WHERE username = $1 OR email = $1;`,
 			[usernameOrEmail],
 		);
@@ -32,6 +32,7 @@ export async function signin(usernameOrEmail, loginPassword) {
 
 		const hash = response.rows[0].password;
 		const id = response.rows[0].id;
+		const image = response.rows[0].image;
 		const valid = await bcrypt.compare(loginPassword, hash);
 
 		if (!valid)
@@ -43,7 +44,7 @@ export async function signin(usernameOrEmail, loginPassword) {
 			{ expiresIn: '1h' }
 		);	
 
-		return token;
+		return { token, image };
 	} finally {
 		client.release();
 	};
