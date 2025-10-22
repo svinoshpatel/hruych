@@ -2,7 +2,7 @@ import * as authService from '../services/authService.js';
 
 export async function signup(req, res, next) {
 	try {
-		const { displayName, username, email, password } = req.body;	
+		const { displayName, username, email, password } = req.body;
 
 		if (username.includes('@')) {
 			return res.status(400).json(

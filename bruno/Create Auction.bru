@@ -1,0 +1,29 @@
+meta {
+  name: Create Auction
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:3000/api/auction
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "skull",
+    "description": "hahaha",
+    "image": "http://localhost:3000/uploads/goatskull.png",
+    "startingBid": "7",
+    "minBidStep": "1",
+    "isAutobuy": "false",
+    "startTime": "2025-11-01 10:00:00+00",
+    "duration": "3",
+    "author_id": "4"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
