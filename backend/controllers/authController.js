@@ -40,3 +40,13 @@ export async function signin(req, res, next) {
 		res.status(401).json({ error: error.message });
 	};
 };
+
+export async function status(req, res, next) {
+	try {
+		const accountId = req.accountId;
+		const image = await authService.status(accountId);
+		res.status(200).json({ image });
+	} catch (err) {
+		next(err);
+	};	
+};

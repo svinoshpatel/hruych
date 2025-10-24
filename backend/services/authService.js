@@ -49,3 +49,21 @@ export async function signin(usernameOrEmail, loginPassword) {
 		client.release();
 	};
 };
+
+export async function status(accountId) {
+	const client = await pool.connect();
+	try {
+		const response = await client.query(
+			'SELECT image FROM account WHERE id = $1',
+			[accountId],
+		);
+
+		if (response.rows.length === 0)
+			throw new Error('User not found');
+
+		const image = response.rows[0].image;
+		return image;
+	} finally {
+		client.release();
+	};
+};

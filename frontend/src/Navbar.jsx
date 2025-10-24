@@ -9,10 +9,25 @@ import { AccountContext } from "./AccountContext";
 import { useEffect } from "react";
 
 export default function Navbar() {
-	const { authorized } = useContext(AccountContext);
+	const { authorized, setAuthorized } = useContext(AccountContext);
 
 	useEffect(() => {
-		
+		async function checkAuth() {
+			try {
+				const res = await fetch(
+					'http://localhost:3000/api/auth/status',
+					{ credentials: 'include' },
+				);
+				const data = await res.json();
+
+				if (res.ok) {
+					setAuthorized(true);
+				};
+			} catch (err) {
+				setAuthorized(false);
+			};
+		};
+		checkAuth();
 	}, []);
 
 	return(
