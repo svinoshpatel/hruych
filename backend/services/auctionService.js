@@ -49,14 +49,14 @@ export async function getAuctionsByAccountId(accountId) {
 };
 
 export async function createAuction(
-	title, description, image, startingBid, minBidStep, isAutobuy,
-	autobuyPrice, startTime, duration, accountId
+	title, description, imagePath, startingBid, minBidStep, isAutobuy,
+	autobuyPrice, duration, accountId
 ) {
 	const client = await pool.connect();
-
-	const startTimeDate = new Date(startTime);
+	
+	const startTimeDate = new Date();
 	const endTimeDate = new Date(startTimeDate);
-	endTimeDate.setDate(startTimeDate.getDate() + duration);
+	endTimeDate.setDate(startTimeDate.getDate() + parseInt(duration));
 	try {
 		const result = await client.query(
 			`INSERT INTO auction (
@@ -64,13 +64,16 @@ export async function createAuction(
 				is_autobuy, autobuy_price, start_time, end_time, author_id
 			) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 			[
-				title, description, image, startingBid, minBidStep,
-				isAutobuy, autobuyPrice, startTime, endTimeDate, accountId
+				title, description, imagePath, startingBid, minBidStep,
+				isAutobuy, autobuyPrice, startTimeDate, endTimeDate, accountId
 			],
 		);
-		console.log('hahaha' + result.rows[0])
 		return result.rows[0];
 	} finally {
 		client.release();
+		console.log(startTimeDate);
+		console.log(duration);
+		console.log(typeof(duration));
+		console.log(endTimeDate);
 	};
 };

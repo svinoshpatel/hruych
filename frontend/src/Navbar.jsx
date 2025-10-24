@@ -6,9 +6,14 @@ import ChatNavItem from "./components/ChatNavItem";
 import ProfileNavItem from "./components/ProfileNavItem";
 import { useContext } from "react";
 import { AccountContext } from "./AccountContext";
+import { useEffect } from "react";
 
 export default function Navbar() {
 	const { authorized } = useContext(AccountContext);
+
+	useEffect(() => {
+		
+	}, []);
 
 	return(
 		<>

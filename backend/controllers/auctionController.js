@@ -46,13 +46,14 @@ export async function getSelfAuctions(req, res, next) {
 export async function createAuction(req, res, next) {
 	try {
 		const accountId = req.accountId;
+		const imagePath = `http://localhost:3000/uploads/${req.file.filename}`;
 		const {
-			title, description, image, startingBid, minBidStep, isAutobuy,
-			autobuyPrice, startTime, duration 
+			title, description, startingBid, minBidStep, isAutobuy,
+			autobuyPrice, duration 
 		} = req.body;
 		const auction = await auctionService.createAuction(
-			title, description, image, startingBid, minBidStep, isAutobuy,
-			autobuyPrice, startTime, duration, accountId
+			title, description, imagePath, startingBid, minBidStep, isAutobuy,
+			autobuyPrice, duration, accountId
 		);
 
 		return res.status(201).json(`Auction created: ${auction}`);

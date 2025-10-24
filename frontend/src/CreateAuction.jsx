@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ImageUpload from "./components/ImageUpload";
+import { useNavigate } from "react-router";
 
 export default function CreateAuction() {
 	const [title, setTitle] = useState('');
@@ -9,38 +10,37 @@ export default function CreateAuction() {
 	const [minBidStep, setMinBidStep] = useState(1);
 	const [isAutobuy, setIsAutobuy] = useState(false);
 	const [autobuyPrice, setAutobuyPrice] = useState(0);
-	const [startTime, setStartTime] = useState();
-	const [duration, setDuration] = useState();
+	const [duration, setDuration] = useState('1');
+
+	const navigate = useNavigate();
 
 	async function handleSubmitAuction(event) {
 		event.preventDefault();	
 
-		setStartTime(Date.now());
+		const formData = new FormData();
+		formData.append('title', title);
+		formData.append('description', description);
+		formData.append('image', selectedFile);
+		formData.append('startingBid', startingBid);
+		formData.append('minBidStep', minBidStep);
+		formData.append('isAutobuy', isAutobuy);
+		formData.append('autobuyPrice', autobuyPrice);
+		formData.append('duration', duration);
 
-		const payload = {
-			title,
-			description,
-			selectedFile,
-			startingBid,
-			minBidStep,
-			isAutobuy,
-			autobuyPrice,
-			startTime,
-			duration
-		};
-		
 		try {
 			const response = await fetch(
 				'http://localhost:3000/api/auction', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload),
+				credentials: 'include',
+				body: formData,
 			});
 
 			if (!response.ok) {
 				const err = await response.text();
 				throw new Error(err || 'Failed to create auction');
 			};
+
+			navigate('/account/me');	
 
 		} catch (err) {
 			console.error(err);
@@ -183,8 +183,8 @@ export default function CreateAuction() {
 						type='radio'
 						id='day'
 						name='duration'
-						value='24hours'
-						checked={duration === '24hours'}
+						value='1'
+						checked={duration === '1'}
 						onChange={(e) => setDuration(e.target.value)}
 					/>
 					<label htmlFor='day' className="ml-2">
@@ -194,8 +194,8 @@ export default function CreateAuction() {
 						type='radio'
 						id='3days'
 						name='duration'
-						value='3days'
-						checked={duration === '3days'}
+						value='3'
+						checked={duration === '3'}
 						onChange={(e) => setDuration(e.target.value)}
 					/>
 					<label htmlFor='3days' className="ml-2">
