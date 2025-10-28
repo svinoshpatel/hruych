@@ -71,9 +71,5 @@ export async function createAuction(
 		return result.rows[0];
 	} finally {
 		client.release();
-		console.log(startTimeDate);
-		console.log(duration);
-		console.log(typeof(duration));
-		console.log(endTimeDate);
 	};
 };

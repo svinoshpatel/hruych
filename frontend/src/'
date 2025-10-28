@@ -43,7 +43,7 @@ export default function Auction() {
 					08:25:15
 				</div>
 				{/* Bids */}
-				<div className='h-50 border-t border-mocha-overlay0'>
+				<div className='h-50 border-t border-mocha-subtext1'>
 					<div>bid 1</div>
 					<div>bid 2</div>
 					<div>bid 3</div>
@@ -52,7 +52,8 @@ export default function Auction() {
 
 			<button
 				className='
-					mt-5 mb-10 py-1
+					w-3/4
+					ml-10 mr-2 mt-5 mb-10 py-1
 					bg-mocha-blue
 					rounded-full
 					font-bold

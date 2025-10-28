@@ -13,12 +13,12 @@ import CreateAuction from './CreateAuction.jsx';
 const router = createBrowserRouter([
 	{
 		path: '/',
-		Component: Navbar,
+		element: <Navbar />,
 		children: [
-			{ path: '/', Component: App, loader: auctionsLoader },
-			{ path: '/auction/:id', Component: Auction, loader: auctionLoader },
-			{ path: '/account/me', Component: Account, loader: accountLoader },
-			{ path: '/auction/create', Component: CreateAuction },
+			{ path: '/', element: <App />, loader: auctionsLoader },
+			{ path: '/auction/:id', element: <Auction />, loader: auctionLoader },
+			{ path: '/account/me', element: <Account />, loader: accountLoader },
+			{ path: '/auction/create', element: <CreateAuction /> },
 		]
 	}
 ]);

@@ -9,7 +9,9 @@ import { AccountContext } from "./AccountContext";
 import { useEffect } from "react";
 
 export default function Navbar() {
-	const { authorized, setAuthorized } = useContext(AccountContext);
+	const {
+		authorized, setAuthorized, setAccountPic
+	} = useContext(AccountContext);
 
 	useEffect(() => {
 		async function checkAuth() {
@@ -22,9 +24,11 @@ export default function Navbar() {
 
 				if (res.ok) {
 					setAuthorized(true);
+					setAccountPic(data.image)
 				};
 			} catch (err) {
 				setAuthorized(false);
+				setAccountPic(null);
 			};
 		};
 		checkAuth();

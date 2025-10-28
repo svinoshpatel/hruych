@@ -8,7 +8,7 @@ import { AccountContext } from "../AccountContext";
 export default function ProfileNavItem({ isAuthorized }) {
 	const navigate = useNavigate();
 	const [showAuthPrompt, setShowAuthPrompt] = useState(false);
-	const { account } = useContext(AccountContext);
+	const { accountPic } = useContext(AccountContext);
 
 	function handleClick() {
 		if (isAuthorized) {
@@ -32,7 +32,7 @@ export default function ProfileNavItem({ isAuthorized }) {
 					className='
 						size-8 outline-mocha-text outline-2
 					'
-					src={account}
+					src={accountPic}
 				/>
 			</button>
 			{showAuthPrompt && (
