@@ -1,4 +1,7 @@
-import { useLoaderData } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
+import ProfilePic from './components/ProfilePic';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export async function loader({ params }) {
 	const auctionId = params.id;
@@ -24,10 +27,30 @@ export async function loader({ params }) {
 	return { account, auction };
 };
 
-
 export default function Auction() {
 	const { auction } = useLoaderData();
 	const { account } = useLoaderData();
+
+	const navigate = useNavigate();
+
+	const [totalSeconds, setTotalSeconds] = useState(
+		auction.remaining_seconds
+	);
+
+	useEffect(() => {
+		if (totalSeconds <= 0) return;
+
+		const intervalId = setInterval(() => {
+			setTotalSeconds(prev => prev > 0 ? prev - 1 : 0);
+		}, 1000);
+
+		return () => clearInterval(intervalId);
+	}, [totalSeconds]);
+
+	const displaySeconds = totalSeconds % 60;
+	const displayMinutes = Math.floor((totalSeconds % 3600) / 60);
+	const displayHours = Math.floor(totalSeconds % (24 * 3600) / 3600);
+	const displayDays = Math.floor(totalSeconds / (24 * 3600));
 
 	return(
 		<div className='flex flex-col m-3'>
@@ -40,7 +63,15 @@ export default function Auction() {
 			<div className='bg-mocha-mantle mt-3 border-xl'>
 				{/* Timer */}
 				<div className='text-center text-2xl p-2'>
-					08:25:15
+					{totalSeconds <= 0
+						? `Auction ended`
+						: displayDays > 0
+						? `${displayDays} days and
+							${displayHours.toString().padStart(2, '0')} hours`
+						: `${displayHours.toString().padStart(2, '0')} :
+							${displayMinutes.toString().padStart(2, '0')} :
+							${displaySeconds.toString().padStart(2, '0')}`
+					}
 				</div>
 				{/* Bids */}
 				<div className='h-50 border-t border-mocha-overlay0'>
@@ -65,18 +96,26 @@ export default function Auction() {
 			</button>
 			
 			{/* Author profile */}
-			<div className='flex mt-3'>
-				<img
+			<button
+				className='flex mt-3'
+				onClick={() => navigate(`/account/${account.id}`)}
+			>
+				<ProfilePic
 					src={account.image}
-					className="size-15 rounded-full"
-					alt='Account Image'
+					className='size-15 rounded-full'
+					alt='Account image'
 				/>
-				<h2 className='ml-3'>{account.name}</h2>
-			</div>
+				<div className='ml-3'>
+					<h2 className=''>{account.display_name}</h2>
+					<h2 className='text-mocha-subtext0 text-sm'>
+						@{account.username}
+					</h2>
+				</div>
+			</button>
 
 			{/* Description */}
 			<div className='mt-5'>
-				<h1>{auction.title}</h1>
+				<h1 className='text-2xl font-semibold'>{auction.title}</h1>
 				<p>{auction.description}</p>
 			</div>
 		</div>

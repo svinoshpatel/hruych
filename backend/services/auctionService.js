@@ -1,5 +1,8 @@
 import pool from "../config/database.js";
-import getRelativeTime from "../utils/timeUtils.js";
+import {
+	getRelativeTime,
+	calculateRemainingDuration,
+}  from "../utils/timeUtils.js";
 
 export async function getAuctionById(auctionId) {
 	const client = await pool.connect();
@@ -8,8 +11,12 @@ export async function getAuctionById(auctionId) {
 			'SELECT * FROM auction WHERE id = $1',
 			[auctionId],
 		);
+		const auction = result.rows[0];
+		auction.remaining_seconds = calculateRemainingDuration(
+			auction.end_time
+		);
 
-		return result.rows[0] || null;
+		return auction || null;
 	} finally {
 		client.release();
 	};

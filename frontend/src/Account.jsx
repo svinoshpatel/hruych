@@ -140,7 +140,7 @@ export default function Account() {
 				</div>
 				<div
 					className={
-						`bg-mocha-mantle h-100 mx-5
+						`bg-mocha-mantle min-h-100 mx-5
 						${isAuctionActive ? 'rounded-tr-xl' : 'rounded-tl-xl'}`
 					}
 				>

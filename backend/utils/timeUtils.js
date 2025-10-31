@@ -1,4 +1,4 @@
-function getRelativeTime(date) {
+export function getRelativeTime(date) {
 	const now = new Date();
 	const endTime = new Date(date);
 
@@ -23,4 +23,10 @@ function getRelativeTime(date) {
 		return rtf.format(diffInDays, 'day');
 };
 
-export default getRelativeTime;
+export function calculateRemainingDuration(endTime) {
+	const diff = Date.parse(endTime) - Date.now();
+	let seconds = Math.floor(diff / 1000);
+
+	return seconds;
+};
+
