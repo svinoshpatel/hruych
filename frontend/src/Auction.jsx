@@ -2,6 +2,7 @@ import { useLoaderData, useNavigate } from 'react-router';
 import ProfilePic from './components/ProfilePic';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Timer from './components/Timer';
 
 export async function loader({ params }) {
 	const auctionId = params.id;
@@ -33,25 +34,6 @@ export default function Auction() {
 
 	const navigate = useNavigate();
 
-	const [totalSeconds, setTotalSeconds] = useState(
-		auction.remaining_seconds
-	);
-
-	useEffect(() => {
-		if (totalSeconds <= 0) return;
-
-		const intervalId = setInterval(() => {
-			setTotalSeconds(prev => prev > 0 ? prev - 1 : 0);
-		}, 1000);
-
-		return () => clearInterval(intervalId);
-	}, [totalSeconds]);
-
-	const displaySeconds = totalSeconds % 60;
-	const displayMinutes = Math.floor((totalSeconds % 3600) / 60);
-	const displayHours = Math.floor(totalSeconds % (24 * 3600) / 3600);
-	const displayDays = Math.floor(totalSeconds / (24 * 3600));
-
 	return(
 		<div className='flex flex-col m-3'>
 			<img
@@ -62,17 +44,7 @@ export default function Auction() {
 
 			<div className='bg-mocha-mantle mt-3 border-xl'>
 				{/* Timer */}
-				<div className='text-center text-2xl p-2'>
-					{totalSeconds <= 0
-						? `Auction ended`
-						: displayDays > 0
-						? `${displayDays} days and
-							${displayHours.toString().padStart(2, '0')} hours`
-						: `${displayHours.toString().padStart(2, '0')} :
-							${displayMinutes.toString().padStart(2, '0')} :
-							${displaySeconds.toString().padStart(2, '0')}`
-					}
-				</div>
+				<Timer remainingSeconds={auction.remaining_seconds} />
 				{/* Bids */}
 				<div className='h-50 border-t border-mocha-overlay0'>
 					<div>bid 1</div>
