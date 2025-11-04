@@ -44,7 +44,7 @@ export async function signin(usernameOrEmail, loginPassword) {
 			{ expiresIn: '1h' }
 		);	
 
-		return { token, image };
+		return { token, image, id };
 	} finally {
 		client.release();
 	};

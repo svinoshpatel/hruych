@@ -13,6 +13,7 @@ export default function SignForm({ setShowAuthPrompt }) {
 	const [loginPassword, setLoginPassword] = useState('');
 	const { setAccountPic } = useContext(AccountContext);
 	const { setAuthorized } = useContext(AccountContext);
+	const { setAccountId } = useContext(AccountContext);
 
 	async function handleRegisterSubmit(event) {
 		event.preventDefault();
@@ -72,8 +73,9 @@ export default function SignForm({ setShowAuthPrompt }) {
 			};
 
 			setShowAuthPrompt(false);
-			const { image } = await response.json();
+			const { image, id } = await response.json();
 			setAccountPic(image);
+			setAccountId(id);
 			setAuthorized(true);
 		} catch (error) {
 			console.error(error);
