@@ -1,14 +1,44 @@
 import { useState, useEffect } from 'react';
 import { Masonry } from 'masonic';
+import Skeleton from 'react-loading-skeleton';
 
 function AuctionList({ auctions }) {
 	const [isReady, setIsReady] = useState(false);
+	const [loaded, setLoaded] = useState(false);
+	const [sizes, setSizes] = useState({});
 
 	useEffect(() => {
 		requestAnimationFrame(() => {
 			setTimeout(() => setIsReady(true), 0);
 		});
 	}, []);
+
+	useEffect(() => {
+		async function preload() {
+			const sizeMap = {};
+			await Promise.all(
+				auctions.map(({ id, image }) => new Promise(resolve => {
+					const img = new Image();
+					img.src = image;
+					img.onload = () => {
+						sizeMap[id] = {
+							width: img.naturalWidth,
+							height: img.naturalHeight
+						};
+						resolve();
+					};
+					img.onerror = () => resolve();
+				}))
+			);
+			setSizes(sizeMap);
+			setLoaded(true);
+		};
+		if (auctions.length)
+			preload();
+	}, [auctions]);
+
+	if (!loaded)
+		return <div>Loading images...</div>;
 
 	if (!isReady) {
 		return <div className='text-transparent'>...</div>;
@@ -27,23 +57,36 @@ function AuctionList({ auctions }) {
 			<Masonry
 				className='m-2'
 				items={auctions}
-				render={MasonryCard}
 				rowGutter={10}
 				columnGutter={10}
 				columnWidth={150}
 				itemKey={data => data.id}
+				render={({ data }) => (
+					<MasonryCard
+						data={data}
+						size={sizes[data.id]}
+						loaded={loaded}
+					/>
+				)}
 			/>
 		</div>
 	);
 };
 
-function MasonryCard({ data }) {
+function MasonryCard({ data, size, loaded }) {
+	const { width, height } = size || {};
+	const aspectRatio = width && height ? height / width : 1;
+
 	return(
-		<a href={`/auction/${data.id}`}>
+		<a 
+			href={`/auction/${data.id}`}
+			style={{ width: 150, height: 150 * aspectRatio }}
+		>
 			<img
 				src={data.image}
 				alt={`${data.title || 'Auction item'}`}
 				className='rounded-2xl'
+				loading='lazy'
 			/>
 			<span
 				className='

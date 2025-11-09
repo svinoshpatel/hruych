@@ -1,15 +1,21 @@
+import ProfilePic from "./ProfilePic";
+
 export default function BidContainer({ bids, auction }) {
 	return(
 		<div>
 			<div
 				className='
 					min-h-30 border-t border-mocha-overlay0
-					border-b relative flex justify-center
+					border-b relative
 				'
 			>
 				{
 					bids.length === 0 ? (
-						<p className='absolute text-mocha-subtext1 bottom-3'>
+						<p className='
+								absolute text-mocha-subtext1 bottom-3
+								left-[50%] translate-x-[-50%]
+							'
+						>
 							No bids yet
 						</p>
 					) : (
