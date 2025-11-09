@@ -24,9 +24,20 @@ export async function getAllAuctions(req, res, next) {
 };
 
 export async function getAuctionsByAccountId(req, res, next) {
+	console.log('auctions: ', req.params)
 	try {
 		const accountId = req.params.id;
 		const auctions = await auctionService.getAuctionsByAccountId(accountId);
+		return res.status(200).json(auctions);
+	} catch (error) {
+		next(error);
+	};
+};
+
+export async function getSelfCollection(req, res, next) {
+	try {
+		const winnerId = req.accountId;
+		const auctions = await auctionService.getAuctionsByWinnerId(winnerId);
 		return res.status(200).json(auctions);
 	} catch (error) {
 		next(error);

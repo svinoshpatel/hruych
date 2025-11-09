@@ -10,7 +10,19 @@ function AuctionList({ auctions }) {
 		});
 	}, []);
 
-	return isReady ? (
+	if (!isReady) {
+		return <div className='text-transparent'>...</div>;
+	};
+
+	if (!auctions || auctions.length === 0) {
+		return(
+			<div className='p-4 text-center text-mocha-subtext0'>
+				Nothing to display
+			</div>
+		);
+	};
+
+	return(
 		<div className='flex'>
 			<Masonry
 				className='m-2'
@@ -22,7 +34,7 @@ function AuctionList({ auctions }) {
 				itemKey={data => data.id}
 			/>
 		</div>
-	) : <div className='text-transparent'>...</div>;
+	);
 };
 
 const MasonryCard = ({ data }) => (
@@ -34,7 +46,7 @@ const MasonryCard = ({ data }) => (
 		/>
 		<span
 			className='
-			absolute bottom-1 left-2
+			absolute top-1 right-2
 			bg-mocha-green text-mocha-base text-sm
 			rounded-4xl px-2'
 		>
@@ -47,14 +59,6 @@ const MasonryCard = ({ data }) => (
 			rounded-4xl px-2'
 		>
 			{data.end_time}
-		</span>
-		<span
-			className='
-			absolute top-1 right-2
-			bg-mocha-yellow text-mocha-base text-sm
-			rounded-4xl px-2'
-		>
-			Promoted
 		</span>
 	</a>
 );

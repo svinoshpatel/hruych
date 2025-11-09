@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/me', authHandler, accountController.getSelfProfile);
 router.get('/me/auction', authHandler, auctionController.getSelfAuctions);
+router.get('/me/collection', authHandler, auctionController.getSelfCollection);
 router.get('/:id', accountController.getAccountById);
 router.get('/:id/auction', auctionController.getAuctionsByAccountId);
 

@@ -55,6 +55,24 @@ export async function getAuctionsByAccountId(accountId) {
 	};
 };
 
+export async function getAuctionsByWinnerId(winnerId) {
+	const client = await pool.connect();
+	try {
+		const result = await client.query(
+			`SELECT * FROM auction WHERE winner_id = $1`,
+			[winnerId],
+		);
+
+		result.rows.forEach(auction => {
+			auction.end_time = getRelativeTime(auction.end_time);
+		});
+
+		return result.rows;
+	} finally {
+		client.release();
+	};
+};
+
 export async function createAuction(
 	title, description, imagePath, startingBid, minBidStep, isAutobuy,
 	autobuyPrice, duration, accountId

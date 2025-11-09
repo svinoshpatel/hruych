@@ -5,9 +5,17 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/api/auction37/bid
-  body: none
+  url: http://localhost:3000/api/auction/37/bid
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "auctionId": 37,
+    "accountId": 3,
+    "price": 55
+  }
 }
 
 settings {

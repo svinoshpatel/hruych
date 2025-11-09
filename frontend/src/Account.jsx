@@ -6,16 +6,19 @@ import { useLoaderData } from "react-router";
 import AddItemButton from "./components/AddItemButton";
 
 export async function loader() {
-	const [account, auctions] = await Promise.all([
+	const [account, auctions, collection] = await Promise.all([
 		fetch(`http://localhost:3000/api/account/me`, {
 			credentials: 'include',
 		}).then(r => r.json()),
 		fetch(`http://localhost:3000/api/account/me/auction`, {
 			credentials: 'include',
 		}).then(r => r.json()),
+		fetch(`http://localhost:3000/api/account/me/collection`, {
+			credentials: 'include',
+		}).then(r => r.json()),
 	]);
 
-	return { account, auctions };
+	return { account, auctions, collection };
 };
 
 export default function Account() {
@@ -23,7 +26,7 @@ export default function Account() {
 	const [isAuctionActive, setIsAuctionActive] = useState(true);
 	const [isPortfolioActive, setIsPortfolioActive] = useState(false);
 
-	const { account, auctions } = useLoaderData();
+	const { account, auctions, collection } = useLoaderData();
 
 	function handleFollow() {
 		setIsFollowed(!isFollowed);
@@ -135,7 +138,7 @@ export default function Account() {
 							${isPortfolioActive ? 'bg-mocha-mantle' : ''}`
 						}
 					>
-						Portfolio
+						Collection
 					</button>
 				</div>
 				<div
@@ -144,8 +147,10 @@ export default function Account() {
 						${isAuctionActive ? 'rounded-tr-xl' : 'rounded-tl-xl'}`
 					}
 				>
-					{isAuctionActive ? <AuctionList auctions={auctions} /> :
-						<div />}
+					{isAuctionActive
+						? <AuctionList auctions={auctions} />
+						: <AuctionList auctions={collection} />
+					}
 				</div>
 			</div>
 			<AddItemButton />
