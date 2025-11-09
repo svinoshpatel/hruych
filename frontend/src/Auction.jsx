@@ -5,6 +5,7 @@ import Timer from './components/Timer';
 import { AccountContext } from './AccountContext';
 import MakeBid from './components/MakeBid';
 import SignForm from './components/SignForm';
+import BidContainer from './components/BidContainer';
 
 export async function loader({ params }) {
 	const auctionId = params.id;
@@ -71,34 +72,10 @@ export default function Auction() {
 					{/* Timer */}
 					<Timer remainingSeconds={auction.remaining_seconds} />
 					{/* Bids */}
-					<div className='min-h-50 border-t border-mocha-overlay0'>
-						{bids.map(
-							(bid, idx) => (
-								<button
-									className='flex mt-3 w-full items-center'
-									onClick={() => navigate(`/account/${bid.id}`)}
-									key={idx}
-								>
-									<ProfilePic
-										src={bid.image}
-										className='size-13 rounded-full'
-										alt='Account image'
-									/>
-									<div className='ml-3'>
-										<h2 className=''>{bid.display_name}</h2>
-										<h2 className='text-mocha-subtext0 text-sm'>
-											@{bid.username}
-										</h2>
-									</div>
-									<span className='ml-auto mr-5'>
-										{bid.price}$
-									</span>
-								</button>
-							)	
-						)}
-					</div>
+					<BidContainer bids={bids} auction={auction} />
 				</div>
 
+				{auction.remaining_seconds > 0 &&
 				<button
 					className='
 						mt-5 mb-10 py-1
@@ -112,7 +89,7 @@ export default function Auction() {
 				> 
 							
 					Bid
-				</button>
+				</button>}
 				
 				{/* Author profile */}
 				<button

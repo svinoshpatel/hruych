@@ -37,30 +37,24 @@ function AuctionList({ auctions }) {
 	);
 };
 
-const MasonryCard = ({ data }) => (
-	<a href={`/auction/${data.id}`}>
-		<img
-			src={data.image}
-			alt={`${data.title || 'Auction item'}`}
-			className='rounded-2xl'
-		/>
-		<span
-			className='
-			absolute top-1 right-2
-			bg-mocha-green text-mocha-base text-sm
-			rounded-4xl px-2'
-		>
-			300$
-		</span>
-		<span
-			className='
-			absolute bottom-1 right-2
-			bg-mocha-mauve text-mocha-base text-sm
-			rounded-4xl px-2'
-		>
-			{data.end_time}
-		</span>
-	</a>
-);
+function MasonryCard({ data }) {
+	return(
+		<a href={`/auction/${data.id}`}>
+			<img
+				src={data.image}
+				alt={`${data.title || 'Auction item'}`}
+				className='rounded-2xl'
+			/>
+			<span
+				className='
+				absolute bottom-1 right-2
+				bg-mocha-mauve text-mocha-base text-sm
+				rounded-4xl px-2'
+			>
+				{data.end_time}
+			</span>
+		</a>
+	);
+};
 
 export default AuctionList;

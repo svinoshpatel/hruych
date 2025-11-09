@@ -181,6 +181,17 @@ export default function CreateAuction() {
 					<h2 className="mb-1">Will last</h2>
 					<input
 						type='radio'
+						id='2minutes'
+						name='duration'
+						value='2'
+						checked={duration === '2'}
+						onChange={(e) => setDuration(e.target.value)}
+					/>
+					<label htmlFor='2minutes' className="ml-2">
+						2 minutes
+					</label><br/>
+					<input
+						type='radio'
 						id='day'
 						name='duration'
 						value='1'

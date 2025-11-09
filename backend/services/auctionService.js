@@ -81,7 +81,11 @@ export async function createAuction(
 	
 	const startTimeDate = new Date();
 	const endTimeDate = new Date(startTimeDate);
-	endTimeDate.setDate(startTimeDate.getDate() + parseInt(duration));
+	if (duration === '2')
+		endTimeDate.setMinutes(startTimeDate.getMinutes() + parseInt(duration));
+	else
+		endTimeDate.setDate(startTimeDate.getDate() + parseInt(duration));
+
 	try {
 		const result = await client.query(
 			`INSERT INTO auction (

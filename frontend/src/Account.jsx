@@ -4,6 +4,8 @@ import MessageIcon from "./assets/MessageIcon";
 import AuctionList from "./components/AuctionList";
 import { useLoaderData } from "react-router";
 import AddItemButton from "./components/AddItemButton";
+import { AccountContext } from "./AccountContext";
+import { useContext } from "react";
 
 export async function loader() {
 	const [account, auctions, collection] = await Promise.all([
@@ -25,6 +27,8 @@ export default function Account() {
 	const [isFollowed, setIsFollowed] = useState(false);
 	const [isAuctionActive, setIsAuctionActive] = useState(true);
 	const [isPortfolioActive, setIsPortfolioActive] = useState(false);
+
+	const { accountId } = useContext(AccountContext);
 
 	const { account, auctions, collection } = useLoaderData();
 
@@ -68,33 +72,48 @@ export default function Account() {
 				</h2>
 				{/* Buttons */}
 				<div className="flex">
-					<button
-						onClick={handleFollow}
-						className={
-							`w-3/4
-							ml-10 mr-2 mt-5 py-1
-							bg-mocha-blue
-							rounded-full
-							 font-bold
-							${isFollowed ? 'bg-mocha-mantle' :
-								`bg-linear-to-r from-mocha-blue to-mocha-sky
-								text-mocha-crust`
-							}`
-						}
-					>
-						{isFollowed ? 'Following' : 'Follow'}
-					</button>
-					<button
-						className="
-							mr-10 mt-5 py-1 px-2
-							bg-mocha-teal
-							bg-linear-to-r from-mocha-teal to-mocha-green
-							rounded-full
-							text-mocha-crust font-bold
-						"
-					>
-						<MessageIcon />
-					</button>
+					{account.id === accountId ?
+						<button
+							className='
+								w-full
+								mx-10 mt-5 py-1
+								bg-mocha-mantle
+								rounded-full
+								font-bold
+							'
+						>
+							Edit profile
+						</button> :
+						<>
+						<button
+							onClick={handleFollow}
+							className={
+								`w-3/4
+								ml-10 mr-2 mt-5 py-1
+								bg-mocha-blue
+								rounded-full
+								 font-bold
+								${isFollowed ? 'bg-mocha-mantle' :
+									`bg-linear-to-r from-mocha-blue to-mocha-sky
+									text-mocha-crust`
+								}`
+							}
+						>
+							{isFollowed ? 'Following' : 'Follow'}
+						</button>
+						<button
+							className="
+								mr-10 mt-5 py-1 px-2
+								bg-mocha-teal
+								bg-linear-to-r from-mocha-teal to-mocha-green
+								rounded-full
+								text-mocha-crust font-bold
+							"
+						>
+							<MessageIcon />
+						</button>
+						</>
+					}
 				</div>
 				{/* Socials */}
 				<div className="text-center mt-5">
