@@ -34,8 +34,8 @@ export async function createBid(auctionId, accountId, price) {
 		);
 		if (auctionRows.length === 0)
 			throw new NotFoundError('Auction not found');
-		const startingBid = auctionRows[0].starting_bid;
-		const minBidStep = auctionRows[0].min_bid_step;
+		const startingBid = Number(auctionRows[0].starting_bid);
+		const minBidStep = Number(auctionRows[0].min_bid_step);
 		const endTime = new Date(auctionRows[0].end_time);
 
 		if (endTime <= Date.now())
@@ -46,9 +46,9 @@ export async function createBid(auctionId, accountId, price) {
 			ORDER BY price DESC LIMIT 1`,
 			[auctionId]
 		);
-		const highestBid = bidRows.length > 0 ? bidRows[0].price : 0;
+		const highestBid = bidRows.length > 0 ? Number(bidRows[0].price) : 0;
 		
-		if (price <= startingBid || price <= highestBid + minBidStep) {
+		if (price < startingBid || price < highestBid + minBidStep) {
 			throw new BadRequestError(
 				'Bid must be higher than starting bid ' +
 					'and the current max bid + minimal bid step '

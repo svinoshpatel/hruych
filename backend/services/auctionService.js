@@ -25,7 +25,9 @@ export async function getAuctionById(auctionId) {
 export async function getAllAuctions() {
 	const client = await pool.connect();
 	try {
-		const result = await client.query('SELECT * FROM auction');
+		const result = await client.query(
+			'SELECT * FROM auction ORDER BY start_time DESC'
+		);
 
 		result.rows.forEach(auction => {
 			auction.end_time = getRelativeTime(auction.end_time);
@@ -41,7 +43,7 @@ export async function getAuctionsByAccountId(accountId) {
 	const client = await pool.connect();
 	try {
 		const result = await client.query(
-			'SELECT * FROM auction WHERE author_id = $1',
+			'SELECT * FROM auction WHERE author_id = $1 ORDER BY start_time DESC',
 			[accountId],
 		);
 
@@ -59,7 +61,7 @@ export async function getAuctionsByWinnerId(winnerId) {
 	const client = await pool.connect();
 	try {
 		const result = await client.query(
-			`SELECT * FROM auction WHERE winner_id = $1`,
+			`SELECT * FROM auction WHERE winner_id = $1 ORDER BY start_time DESC`,
 			[winnerId],
 		);
 

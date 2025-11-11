@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Masonry } from 'masonic';
-import Skeleton from 'react-loading-skeleton';
 
 function AuctionList({ auctions }) {
 	const [isReady, setIsReady] = useState(false);
 	const [loaded, setLoaded] = useState(false);
 	const [sizes, setSizes] = useState({});
+	console.log(auctions);
+	console.log(loaded);
+	console.log(sizes);
 
 	useEffect(() => {
 		requestAnimationFrame(() => {
@@ -65,7 +67,6 @@ function AuctionList({ auctions }) {
 					<MasonryCard
 						data={data}
 						size={sizes[data.id]}
-						loaded={loaded}
 					/>
 				)}
 			/>
@@ -73,7 +74,7 @@ function AuctionList({ auctions }) {
 	);
 };
 
-function MasonryCard({ data, size, loaded }) {
+function MasonryCard({ data, size }) {
 	const { width, height } = size || {};
 	const aspectRatio = width && height ? height / width : 1;
 
