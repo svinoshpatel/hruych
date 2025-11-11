@@ -5,9 +5,6 @@ function AuctionList({ auctions }) {
 	const [isReady, setIsReady] = useState(false);
 	const [loaded, setLoaded] = useState(false);
 	const [sizes, setSizes] = useState({});
-	console.log(auctions);
-	console.log(loaded);
-	console.log(sizes);
 
 	useEffect(() => {
 		requestAnimationFrame(() => {

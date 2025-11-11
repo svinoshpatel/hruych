@@ -166,10 +166,10 @@ export default function Account() {
 						${isAuctionActive ? 'rounded-tr-xl' : 'rounded-tl-xl'}`
 					}
 				>
-					{isAuctionActive
-						? <AuctionList auctions={auctions} />
-						: <AuctionList auctions={collection} />
-					}
+					<AuctionList
+						key={isAuctionActive ? 'auctions' : 'collection'}
+						auctions={isAuctionActive ? auctions : collection}
+					/>
 				</div>
 			</div>
 			<AddItemButton />
