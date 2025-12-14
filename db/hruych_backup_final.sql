@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict KUjeP6M0MrsQSY80WcfRGn6CvMBt1eqcB7gw0Fo3yDsGyLGFrUm35wsdKOaLMjA
+\restrict wXZlbXGsraVdHlUTFhj64QhandZtdiRvk3aUw3BTeExixU9poLKPQKyQQhZywMs
 
 -- Dumped from database version 15.14
 -- Dumped by pg_dump version 15.14
@@ -75,7 +75,9 @@ CREATE TABLE public.auction (
     starting_bid numeric(12,0),
     min_bid_step numeric(12,0),
     is_autobuy boolean DEFAULT false,
-    autobuy_price numeric(12,0)
+    autobuy_price numeric(12,0),
+    is_open boolean DEFAULT true,
+    winner_id integer
 );
 
 
@@ -185,6 +187,13 @@ COPY public.account (id, display_name, image, username, email, password) FROM st
 18	Viva	\N	vivagmail	viva@gmail.com	$2b$10$vr/pMoH7FjOBhDlajkSM9uKsd71bQdVkAAnQWLifI/bij2W7DLvgy
 20	Markiian Shpak	\N	shpakmark	shpakmark@gmail.com	$2b$10$2MsPmKwM35CR5MRzvVKAR.T/tUCS1RxxNJ/4HyxlLxG6NIyUCWk0q
 19	Maru	http://localhost:3000/uploads/catowl4.png	maru	maru@gmail.com	$2b$10$ZKB/nXhJ1kC6qK/3YQJ9BurFMO7.m5D/BTZHzZUPs0WD0T98SwOh6
+22	Svin	\N	svinn	svinn@gmail.com	$2b$10$jCFGVPc7BXEWdAa5vtxeTOGoHNeKjGLdECHX5vJQ9IYePKewDBhRa
+23	rum	\N	rum	rum@gmail.com	$2b$10$oFJCtEjJkxZMHX1LAzZPVei.fxax2aQpXUSb.qa1XJQt91wxxEiOO
+24	user1	\N	user1	user1@gmail.com	$2b$10$yLhk4EGwmcXCukmOJvBFU.QbqmrIGwqCF7UxyGZ7gx1WR9HAUNznW
+25	user2	\N	user2	user2@gmail.com	$2b$10$rJ3nD8aVNdqzuWgyp.NtnOqj3XSsx1QUcStl/BV/VNqTY5k39fQta
+27	user3	\N	user3	user3@gmail.com	$2b$10$oVCLXNFaNXgRCEM7ormeWOoL/b2HarUXJloM9IHfbhHOJsDUgLzaK
+28	user4	\N	user4	user4@gmail.com	$2b$10$E654rZJNmVh.dNAxtmsyTuZ0OVKaBoMrNMPG79t5wlqiWvqzw1Vga
+29	user7	\N	user7	user7@gmail.com	$2b$10$5iFjwYL6.qBhcjnQ1fLMbOwEh70/pYC3h093trudRKKz0k68GJNFG
 \.
 
 
@@ -192,18 +201,32 @@ COPY public.account (id, display_name, image, username, email, password) FROM st
 -- Data for Name: auction; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.auction (id, image, author_id, title, description, start_time, end_time, starting_bid, min_bid_step, is_autobuy, autobuy_price) FROM stdin;
-4	http://localhost:3000/uploads/goatskull.png	2	Goat Skull Auction	A rare goat skull from the mountains	2025-09-01 10:00:00+00	2025-09-15 10:00:00+00	\N	\N	f	\N
-5	http://localhost:3000/uploads/moth.jpg	3	Moth Wings Collection	Beautiful intricately patterned moth wings	2025-09-03 12:00:00+00	2025-09-20 12:00:00+00	\N	\N	f	\N
-6	http://localhost:3000/uploads/2b-arch-wallpaper-no-text.png	4	2B Arch Wallpaper	High resolution wallpaper inspired by 2B from Nier	2025-08-25 09:00:00+00	2025-09-30 09:00:00+00	\N	\N	f	\N
-7	http://localhost:3000/uploads/spider.jpg	5	Spider Sculpture	Handmade spider sculpture in metal	2025-09-05 14:00:00+00	2025-09-25 14:00:00+00	\N	\N	f	\N
-8	http://localhost:3000/uploads/woman.jpg	6	Portrait Painting	Oil painting portrait of a woman	2025-09-07 16:00:00+00	2025-09-22 16:00:00+00	\N	\N	f	\N
-9	http://localhost:3000/uploads/deer.jpg	7	Deer in Forest	Photograph of deer in a forest setting	2025-09-10 08:00:00+00	2025-09-24 08:00:00+00	\N	\N	f	\N
-3	http://localhost:3000/uploads/goatskull.png	1	something	he told something	2023-07-04 12:05:33+00	2025-09-20 23:00:00+00	\N	\N	f	\N
-11	http://localhost:3000/uploads/goatskull.png	19	skull	hahaha	2025-11-01 10:00:00+00	2025-11-13 10:00:00+00	7	1	f	\N
-12	http://localhost:3000/uploads/goatskull.png	19	skull	hahaha	2025-11-01 10:00:00+00	2025-11-13 10:00:00+00	7	1	f	\N
-32	http://localhost:3000/uploads/1761318850041-skull-wallpaper.png	19	skull	it's a skull	2025-10-24 15:14:10.085+00	2025-10-27 16:14:10.085+00	15	1	t	49
-33	http://localhost:3000/uploads/1761330403482-wallpaperflare.com_wallpaper(18).jpg	19	nito nito		2025-10-24 18:26:43.485+00	2025-10-25 18:26:43.485+00	10	1	f	0
+COPY public.auction (id, image, author_id, title, description, start_time, end_time, starting_bid, min_bid_step, is_autobuy, autobuy_price, is_open, winner_id) FROM stdin;
+35	http://localhost:3000/uploads/1761666638877-Image (1).jpg	19	Cool paper	really cool paper	2025-10-28 15:50:38.931+00	2025-10-31 15:50:38.931+00	10	1	t	30	f	\N
+4	http://localhost:3000/uploads/goatskull.png	2	Goat Skull Auction	A rare goat skull from the mountains	2025-09-01 10:00:00+00	2025-09-15 10:00:00+00	\N	\N	f	\N	f	\N
+5	http://localhost:3000/uploads/moth.jpg	3	Moth Wings Collection	Beautiful intricately patterned moth wings	2025-09-03 12:00:00+00	2025-09-20 12:00:00+00	\N	\N	f	\N	f	\N
+6	http://localhost:3000/uploads/2b-arch-wallpaper-no-text.png	4	2B Arch Wallpaper	High resolution wallpaper inspired by 2B from Nier	2025-08-25 09:00:00+00	2025-09-30 09:00:00+00	\N	\N	f	\N	f	\N
+7	http://localhost:3000/uploads/spider.jpg	5	Spider Sculpture	Handmade spider sculpture in metal	2025-09-05 14:00:00+00	2025-09-25 14:00:00+00	\N	\N	f	\N	f	22
+8	http://localhost:3000/uploads/woman.jpg	6	Portrait Painting	Oil painting portrait of a woman	2025-09-07 16:00:00+00	2025-09-22 16:00:00+00	\N	\N	f	\N	f	22
+9	http://localhost:3000/uploads/deer.jpg	7	Deer in Forest	Photograph of deer in a forest setting	2025-09-10 08:00:00+00	2025-09-24 08:00:00+00	\N	\N	f	\N	f	\N
+3	http://localhost:3000/uploads/goatskull.png	1	something	he told something	2023-07-04 12:05:33+00	2025-09-20 23:00:00+00	\N	\N	f	\N	f	\N
+32	http://localhost:3000/uploads/1761318850041-skull-wallpaper.png	19	skull	it's a skull	2025-10-24 15:14:10.085+00	2025-10-27 16:14:10.085+00	15	1	t	49	f	\N
+33	http://localhost:3000/uploads/1761330403482-wallpaperflare.com_wallpaper(18).jpg	19	nito nito		2025-10-24 18:26:43.485+00	2025-10-25 18:26:43.485+00	10	1	f	0	f	\N
+34	http://localhost:3000/uploads/1761650499560-Image.jpg	19	asd	sadas	2025-10-28 11:21:39.834+00	2025-10-29 11:21:39.834+00	8	1	f	0	f	\N
+36	http://localhost:3000/uploads/1761935332854-cosmos.jpg	19	blackhole	a big blackhole	2025-10-31 18:28:52.863+00	2025-11-03 18:28:52.863+00	5	1	f	0	f	\N
+37	http://localhost:3000/uploads/1761941521352-2b-arch-wallpaper-no-text.png	19	sdf	sdfsfsdfsf	2025-10-31 20:12:01.363+00	2025-11-01 20:12:01.363+00	4	1	f	0	f	22
+39	http://localhost:3000/uploads/1762706806916-wp11906362-hollow-knight-pc-wallpapers.jpg	23	Something cool	A desc	2025-11-09 16:46:46.922+00	2025-11-09 16:48:46.922+00	15	2	f	0	f	22
+38	http://localhost:3000/uploads/1762689406675-wallpaperflare.com_wallpaper(29).jpg	22	aaa	aaaaaaaaaaaaaaaa	2025-11-09 11:56:46.685+00	2025-11-10 11:56:46.685+00	5	1	f	0	f	22
+40	http://localhost:3000/uploads/1762852612133-keiserreich.png	19	asd	asdads	2025-11-11 09:16:52.17+00	2025-11-11 09:18:52.17+00	6	1	f	0	f	19
+43	http://localhost:3000/uploads/1762854295087-wallhaven-729z2o_1920x1200.png	19	jj	jjj	2025-11-11 09:44:55.103+00	2025-11-11 09:46:55.103+00	6	1	f	0	f	19
+11	http://localhost:3000/uploads/goatskull.png	19	skull	hahaha	2025-11-01 10:00:00+00	2025-11-13 10:00:00+00	7	1	f	\N	f	\N
+12	http://localhost:3000/uploads/goatskull.png	19	skull	hahaha	2025-11-01 10:00:00+00	2025-11-13 10:00:00+00	7	1	f	\N	f	\N
+41	http://localhost:3000/uploads/1762852877265-skull-wallpaper.png	19	sdf	sdfsdafsdf	2025-11-11 09:21:17.342+00	2025-11-12 09:21:17.342+00	2	2	f	0	f	19
+42	http://localhost:3000/uploads/1762853385509-result(6).png	19	asdf	asdfasd	2025-11-11 09:29:45.524+00	2025-11-12 09:29:45.524+00	5	1	f	0	f	19
+44	http://localhost:3000/uploads/1765070681149-skull.png	19	Skull	cool skull	2025-12-07 01:24:41.164+00	2025-12-07 01:26:41.164+00	5	2	f	0	f	27
+45	http://localhost:3000/uploads/1765071223838-skull.png	19	skull	cool skull	2025-12-07 01:33:43.849+00	2025-12-07 01:35:43.849+00	5	2	f	0	f	28
+46	http://localhost:3000/uploads/1765072088993-result(4).png	19	skull	cool skull	2025-12-07 01:48:08.998+00	2025-12-07 01:50:08.998+00	5	2	f	0	f	\N
+47	http://localhost:3000/uploads/1765072379764-goatskull.png	19	skull	cool skull	2025-12-07 01:52:59.789+00	2025-12-07 01:54:59.789+00	5	2	f	0	f	29
 \.
 
 
@@ -212,6 +235,42 @@ COPY public.auction (id, image, author_id, title, description, start_time, end_t
 --
 
 COPY public.bid (id, auction_id, account_id, price, bid_time) FROM stdin;
+1	37	8	25	2025-11-01 17:41:38.425299+00
+2	37	9	30	2025-11-01 17:41:50.625475+00
+3	37	12	40	2025-11-01 17:41:56.275449+00
+4	37	3	55	2025-11-04 11:17:10.330404+00
+5	37	19	99	2025-11-04 11:25:04.76895+00
+8	7	22	55	2025-11-04 11:37:22.027607+00
+10	8	22	44	2025-11-04 11:41:38.674352+00
+11	8	22	55	2025-11-04 11:42:49.55936+00
+12	37	22	100	2025-11-06 12:56:43.706558+00
+13	38	22	5	2025-11-09 11:56:58.788119+00
+14	38	22	6	2025-11-09 13:54:12.372989+00
+15	38	22	6	2025-11-09 16:23:31.516579+00
+16	39	19	16	2025-11-09 16:47:15.178415+00
+17	39	22	19	2025-11-09 16:47:41.324002+00
+18	39	23	20	2025-11-09 18:38:15.479213+00
+19	39	23	21	2025-11-09 18:40:20.709076+00
+20	39	23	22	2025-11-09 18:40:44.187559+00
+21	39	23	23	2025-11-09 18:42:52.23904+00
+22	40	19	7	2025-11-11 09:17:16.37903+00
+23	40	19	9	2025-11-11 09:17:35.226384+00
+24	41	19	3	2025-11-11 09:21:37.411237+00
+25	41	19	4	2025-11-11 09:22:08.279406+00
+26	41	19	100	2025-11-11 09:28:28.295194+00
+27	41	19	103	2025-11-11 09:29:08.603252+00
+28	42	19	5	2025-11-11 09:30:05.842094+00
+29	42	19	6	2025-11-11 09:30:38.336782+00
+30	42	19	11	2025-11-11 09:30:43.892099+00
+31	42	19	55	2025-11-11 09:30:47.867735+00
+32	43	19	7	2025-11-11 09:45:00.991258+00
+33	44	27	6	2025-12-07 01:25:25.195193+00
+34	45	28	5	2025-12-07 01:34:34.071355+00
+35	45	25	7	2025-12-07 01:35:09.972829+00
+36	45	28	15	2025-12-07 01:35:23.589734+00
+37	47	29	5	2025-12-07 01:53:44.252211+00
+38	47	25	7	2025-12-07 01:54:01.523098+00
+39	47	29	15	2025-12-07 01:54:11.333287+00
 \.
 
 
@@ -219,21 +278,21 @@ COPY public.bid (id, auction_id, account_id, price, bid_time) FROM stdin;
 -- Name: account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.account_id_seq', 21, true);
+SELECT pg_catalog.setval('public.account_id_seq', 29, true);
 
 
 --
 -- Name: auction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.auction_id_seq', 33, true);
+SELECT pg_catalog.setval('public.auction_id_seq', 47, true);
 
 
 --
 -- Name: bid_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.bid_id_seq', 1, false);
+SELECT pg_catalog.setval('public.bid_id_seq', 39, true);
 
 
 --
@@ -301,8 +360,16 @@ ALTER TABLE ONLY public.bid
 
 
 --
+-- Name: auction fk_winner; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auction
+    ADD CONSTRAINT fk_winner FOREIGN KEY (winner_id) REFERENCES public.account(id) ON DELETE SET NULL;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-\unrestrict KUjeP6M0MrsQSY80WcfRGn6CvMBt1eqcB7gw0Fo3yDsGyLGFrUm35wsdKOaLMjA
+\unrestrict wXZlbXGsraVdHlUTFhj64QhandZtdiRvk3aUw3BTeExixU9poLKPQKyQQhZywMs
 

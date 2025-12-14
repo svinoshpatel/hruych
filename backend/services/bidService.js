@@ -1,5 +1,9 @@
 import pool from '../config/database.js';
-import { NotFoundError, BadRequestError, ForbiddenError } from '../utils/errorTypes.js';
+import {
+	NotFoundError,
+	BadRequestError,
+	ForbiddenError
+} from '../utils/errorTypes.js';
 
 export async function getAllAuctionBids(auctionId) {
 	const client = await pool.connect();

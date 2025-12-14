@@ -36,13 +36,6 @@ function AuctionList({ auctions }) {
 			preload();
 	}, [auctions]);
 
-	if (!loaded)
-		return <div>Loading images...</div>;
-
-	if (!isReady) {
-		return <div className='text-transparent'>...</div>;
-	};
-
 	if (!auctions || auctions.length === 0) {
 		return(
 			<div className='p-4 text-center text-mocha-subtext0'>
@@ -50,6 +43,14 @@ function AuctionList({ auctions }) {
 			</div>
 		);
 	};
+
+	if (!loaded)
+		return <div>Loading images...</div>;
+
+	if (!isReady) {
+		return <div className='text-transparent'>...</div>;
+	};
+
 
 	return(
 		<div className='flex'>

@@ -1,5 +1,4 @@
 import { useLoaderData } from 'react-router';
-import './App.css';
 import AuctionList from './components/AuctionList';
 
 export async function loader() {
