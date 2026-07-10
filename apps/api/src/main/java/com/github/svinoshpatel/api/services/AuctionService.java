@@ -63,6 +63,11 @@ public class AuctionService {
         return auctionMapper.toAuctionRes(savedAuction, timeLeft);
     }
 
+    public void delete(Long id, Jwt jwt) {
+        var existingAuction = getExistingAuction(id, jwt);
+        auctionRepository.delete(existingAuction);
+    }
+
     private Auction getExistingAuction(Long id, Jwt jwt) {
         var existingAuction = auctionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Auction with id " + id + " not found"));
@@ -74,10 +79,11 @@ public class AuctionService {
 
         return existingAuction;
     }
+
     private Duration convertDateTimeToTimeLeft(Auction auction) {
         var startTime = auction.getStartDateTime();
         var endTime = auction.getEndDateTime();
         // TODO: Maybe change timeLeft output format?
-        return Duration.between(endTime, startTime);
+        return Duration.between(startTime, endTime);
     }
 }

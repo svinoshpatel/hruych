@@ -56,7 +56,7 @@ public class Auction {
     @Column(name = "min_bid_step", nullable = false)
     private Long minBidStep;
 
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", orphanRemoval = true)
     private Set<Bid> bids = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "auction", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)

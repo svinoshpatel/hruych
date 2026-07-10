@@ -58,5 +58,12 @@ public class AuctionController {
         return ResponseEntity.ok(res);
     }
 
-    //  Before implementing delete method add on delete rules in database because i forgot to
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete
+            (@PathVariable Long id,
+             @AuthenticationPrincipal Jwt jwt) {
+        auctionService.delete(id, jwt);
+
+        return ResponseEntity.noContent().build();
+    }
 }
