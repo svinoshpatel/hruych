@@ -37,8 +37,8 @@ public class Auction {
     private String terms;
 
     @NotNull
-    @Column(name = "image_url", nullable = false, length = Integer.MAX_VALUE)
-    private String imageUrl;
+    @Column(name = "image_key", nullable = false, length = Integer.MAX_VALUE)
+    private String imageKey;
 
     @ColumnDefault("now()")
     @Column(name = "start_date_time")
@@ -59,8 +59,10 @@ public class Auction {
     @OneToMany(mappedBy = "auction")
     private Set<Bid> bids = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "auction")
+    @OneToMany(mappedBy = "auction", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Set<Tier> tiers = new LinkedHashSet<>();
 
-
+    public void addTiers() {
+        this.tiers.forEach(t -> t.setAuction(this));
+    }
 }

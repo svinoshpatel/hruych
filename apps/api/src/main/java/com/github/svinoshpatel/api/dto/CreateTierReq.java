@@ -1,0 +1,9 @@
+package com.github.svinoshpatel.api.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateTierReq(@NotBlank String title,
+                            @NotNull @Min(100) Long price) {
+}

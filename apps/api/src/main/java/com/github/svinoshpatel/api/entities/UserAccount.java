@@ -25,8 +25,8 @@ public class UserAccount {
     @Column(name = "sub", nullable = false)
     private UUID sub;
 
-    @Column(name = "avatar_url", length = Integer.MAX_VALUE)
-    private String avatarUrl;
+    @Column(name = "avatar_key", length = Integer.MAX_VALUE)
+    private String avatarKey;
 
     @NotNull
     @Column(name = "display_name", nullable = false, length = Integer.MAX_VALUE)

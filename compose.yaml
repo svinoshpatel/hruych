@@ -1,9 +1,22 @@
 services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - LOCALSTACK_AUTH_TOKEN=ls-DUvOBELe-vOcI-keQA-6444-4914jobob737
+      - AWS_DEFAULT_REGION=eu-central-2
+      - PERSISTENCE=1
+    volumes:
+      - "./infra/docker/localstack/init:/etc/localstack/init/ready.d"
+      - "./infra/docker/localstack:/var/lib/localstack"
   postgres:
     image: postgres:18
     container_name: postgres
     restart: unless-stopped
     environment:
+      POSTGRES_DB: app
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: svin
       TZ: UTC

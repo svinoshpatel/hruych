@@ -17,10 +17,10 @@ public class UserAccountService {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public void getOrCreateUserAccount(Jwt jwt) {
+    public UserAccount getOrCreateUserAccount(Jwt jwt) {
         var sub = UUID.fromString(Objects.requireNonNull(jwt.getSubject()));
 
-        var user = userAccountRepository.findBySub(sub)
+        return userAccountRepository.findBySub(sub)
                 .orElseGet(() -> {
                     var newUser = new UserAccount();
                     newUser.setSub(sub);
