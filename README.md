@@ -120,8 +120,6 @@ Docs are generated from the code at runtime:
    ```bash
    cp .env.template .env
    ```
-   `LOCALSTACK_AUTH_TOKEN` can stay empty if you're using the LocalStack
-   community edition.
 3. Start the local infra from the repo root:
    ```bash
    docker compose up -d
