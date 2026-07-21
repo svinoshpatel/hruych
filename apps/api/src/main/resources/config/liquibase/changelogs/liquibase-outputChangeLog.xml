@@ -1,0 +1,105 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-1">
+        <createTable tableName="auction">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="auction_pk"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="terms" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_key" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="now()" name="start_date_time" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="end_date_time" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="starting_bid" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_bid_step" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-2">
+        <createTable tableName="user_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_account_pk"/>
+            </column>
+            <column name="sub" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avatar_key" type="TEXT"/>
+            <column name="display_name" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bio" type="TEXT"/>
+            <column name="reputation" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="followers_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="is_followed" type="BOOLEAN"/>
+            <column name="username" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-3">
+        <createTable tableName="bid">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="bid_pk"/>
+            </column>
+            <column name="bidder_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="auction_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-4">
+        <createTable tableName="tier">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tier_pk"/>
+            </column>
+            <column name="auction_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-5">
+        <addUniqueConstraint columnNames="sub" constraintName="user_account_sub_key" tableName="user_account"/>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-6">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="auction" constraintName="auction_user_account_id_fk" deferrable="false" initiallyDeferred="false" onDelete="SET NULL" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-7">
+        <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="bid" constraintName="bid_auction_id_fk" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-8">
+        <addForeignKeyConstraint baseColumnNames="bidder_id" baseTableName="bid" constraintName="bid_user_account_id_fk" deferrable="false" initiallyDeferred="false" onDelete="SET NULL" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="svinoshpatel (generated)" id="1784659263915-9">
+        <addForeignKeyConstraint baseColumnNames="auction_id" baseTableName="tier" constraintName="tier_auction_id_fk" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="auction" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

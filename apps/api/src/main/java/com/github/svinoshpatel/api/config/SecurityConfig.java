@@ -30,7 +30,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(requests -> {
             requests.requestMatchers( "/bid-handshake").permitAll();
-            requests.anyRequest().permitAll();
+            requests.anyRequest().authenticated();
         });
 
         return http.build();
