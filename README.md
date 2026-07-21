@@ -124,7 +124,7 @@ provider), IntelliJ IDEA.
    ```bash
    cp .env.template .env
    ```
-3. Run `ApiApplication` from IntelliJ's Spring Boot run configuration (**-Duser.timezone=UTC** vm option may be needed for DB to work.
+3. Run `ApiApplication` from IntelliJ's Spring Boot run configuration (**-Duser.timezone=UTC** vm option may be needed for DB to work.)
    `spring-boot-docker-compose` will automatically start Postgres,
    Keycloak (pre-loaded with a `main` realm, test users, and a `postman`
    OAuth client for manual token testing), and LocalStack (which
