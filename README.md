@@ -5,6 +5,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue)
 ![Keycloak](https://img.shields.io/badge/Keycloak-26-blue)
 ![Status](https://img.shields.io/badge/status-work--in--progress-yellow)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 A backend for a real-time online auction platform. Users publish auctions
 (with an image, terms, and optional Kickstarter-style reward tiers), and
