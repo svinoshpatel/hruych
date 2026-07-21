@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(requests -> {
-            requests.requestMatchers( "/bid-handshake").permitAll();
+            requests.requestMatchers("/bid-handshake", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                    .permitAll();
             requests.anyRequest().authenticated();
         });
 
