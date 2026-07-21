@@ -1,20 +1,23 @@
 package com.github.svinoshpatel.api.services;
 
-import com.github.svinoshpatel.api.dto.CreateAuctionReq;
-import com.github.svinoshpatel.api.dto.AuctionRes;
-import com.github.svinoshpatel.api.dto.UpdateAuctionReq;
+import com.github.svinoshpatel.api.dto.Auction.AuctionPageRes;
+import com.github.svinoshpatel.api.dto.Auction.CreateAuctionReq;
+import com.github.svinoshpatel.api.dto.Auction.AuctionRes;
+import com.github.svinoshpatel.api.dto.Auction.UpdateAuctionReq;
 import com.github.svinoshpatel.api.entities.Auction;
 import com.github.svinoshpatel.api.exceptions.NotFoundException;
 import com.github.svinoshpatel.api.exceptions.UnauthorizedException;
 import com.github.svinoshpatel.api.mappers.AuctionMapper;
 import com.github.svinoshpatel.api.repositories.AuctionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -47,7 +50,7 @@ public class AuctionService {
     }
 
     public AuctionRes update(UpdateAuctionReq req, MultipartFile image, Jwt jwt, Long id) {
-        var existingAuction = getExistingAuction(id, jwt);
+        var existingAuction = getCurrentUserExistingAuction(id, jwt);
 
         var updatedAuction = auctionMapper.updateAuction(existingAuction, req);
         if (image != null) {
@@ -64,13 +67,29 @@ public class AuctionService {
     }
 
     public void delete(Long id, Jwt jwt) {
-        var existingAuction = getExistingAuction(id, jwt);
+        var existingAuction = getCurrentUserExistingAuction(id, jwt);
         auctionRepository.delete(existingAuction);
     }
 
-    private Auction getExistingAuction(Long id, Jwt jwt) {
-        var existingAuction = auctionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Auction with id " + id + " not found"));
+    public AuctionRes getById(Long id) {
+        var auction = getExistingAuction(id);
+        var timeLeft = convertDateTimeToTimeLeft(auction);
+        return auctionMapper.toAuctionRes(auction, timeLeft);
+    }
+
+    public AuctionPageRes getAll(int page, int size) {
+        var pageable = PageRequest.of(page, size);
+
+        var auctionPage = auctionRepository.findAllByOrderByEndDateTimeAsc(pageable);
+
+        var auctionListRes = auctionMapper.toAuctionResList(auctionPage.getContent());
+
+        // TODO: not sure that i really need page data to be like that in my implementation
+        return new AuctionPageRes(auctionListRes, page, size, (int) auctionPage.getTotalPages());
+    }
+
+    private Auction getCurrentUserExistingAuction(Long id, Jwt jwt) {
+        var existingAuction = getExistingAuction(id);
 
         var jwtSub = UUID.fromString(Objects.requireNonNull(jwt.getSubject()));
         if (!existingAuction.getAuthor().getSub().equals(jwtSub)) {
@@ -80,10 +99,15 @@ public class AuctionService {
         return existingAuction;
     }
 
+    private Auction getExistingAuction(Long id) {
+        return auctionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Auction with id " + id + " not found"));
+    }
+
     private Duration convertDateTimeToTimeLeft(Auction auction) {
-        var startTime = auction.getStartDateTime();
+        var currentTime = OffsetDateTime.now();
         var endTime = auction.getEndDateTime();
         // TODO: Maybe change timeLeft output format?
-        return Duration.between(startTime, endTime);
+        return Duration.between(currentTime, endTime);
     }
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -54,5 +55,14 @@ public class UserAccount {
     @OneToMany(mappedBy = "author")
     private Set<Auction> auctions = new LinkedHashSet<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof UserAccount that)) return false;
+        return Objects.equals(id, that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

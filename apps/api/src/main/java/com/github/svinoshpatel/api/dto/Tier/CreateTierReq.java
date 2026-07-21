@@ -1,4 +1,4 @@
-package com.github.svinoshpatel.api.dto;
+package com.github.svinoshpatel.api.dto.Tier;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

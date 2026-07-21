@@ -18,20 +18,19 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain resourceServerFilterChain(
             HttpSecurity http,
-            Converter<Jwt, AbstractAuthenticationToken> authenticationConverter) throws Exception {
+            Converter<Jwt, AbstractAuthenticationToken> authenticationConverter) {
         // Convert JWT to Authentication object
-        http.oauth2ResourceServer(resourceServer -> {
-            resourceServer.jwt(jwtDecoder -> {
-                jwtDecoder.jwtAuthenticationConverter(authenticationConverter);
-            });
-        });
+        http.oauth2ResourceServer(resourceServer -> resourceServer
+                .jwt(jwtDecoder -> jwtDecoder
+                        .jwtAuthenticationConverter(authenticationConverter)));
 
-        http.sessionManagement(sessions -> {
-            sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        }).csrf(AbstractHttpConfigurer::disable);
+        http.sessionManagement(sessions -> sessions
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(requests -> {
-            requests.anyRequest().authenticated();
+            requests.requestMatchers( "/bid-handshake").permitAll();
+            requests.anyRequest().permitAll();
         });
 
         return http.build();

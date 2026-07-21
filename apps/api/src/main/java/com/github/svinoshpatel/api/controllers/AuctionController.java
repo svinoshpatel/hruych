@@ -1,8 +1,9 @@
 package com.github.svinoshpatel.api.controllers;
 
-import com.github.svinoshpatel.api.dto.CreateAuctionReq;
-import com.github.svinoshpatel.api.dto.AuctionRes;
-import com.github.svinoshpatel.api.dto.UpdateAuctionReq;
+import com.github.svinoshpatel.api.dto.Auction.AuctionPageRes;
+import com.github.svinoshpatel.api.dto.Auction.CreateAuctionReq;
+import com.github.svinoshpatel.api.dto.Auction.AuctionRes;
+import com.github.svinoshpatel.api.dto.Auction.UpdateAuctionReq;
 import com.github.svinoshpatel.api.services.AuctionService;
 import com.github.svinoshpatel.api.validation.ValidFile;
 import jakarta.validation.Valid;
@@ -65,5 +66,21 @@ public class AuctionController {
         auctionService.delete(id, jwt);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AuctionRes> getById(@PathVariable Long id) {
+        var auction = auctionService.getById(id);
+
+        return ResponseEntity.ok(auction);
+    }
+
+    // TODO: Implement parametrized sorting (maybe)
+    @GetMapping
+    public ResponseEntity<AuctionPageRes> getAll(@RequestParam int page,
+                                                 @RequestParam int size) {
+        var auctions = auctionService.getAll(page, size);
+
+        return ResponseEntity.ok(auctions);
     }
 }

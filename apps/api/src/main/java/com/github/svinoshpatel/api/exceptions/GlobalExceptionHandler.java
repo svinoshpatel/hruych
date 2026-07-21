@@ -27,5 +27,10 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleUnauthorizedException(UnauthorizedException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
     }
+
+    @ExceptionHandler(InvalidBidAmountException.class)
+    public ProblemDetail handleUnprocessableEntityException(InvalidBidAmountException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_CONTENT, e.getMessage());
+    }
 }
 

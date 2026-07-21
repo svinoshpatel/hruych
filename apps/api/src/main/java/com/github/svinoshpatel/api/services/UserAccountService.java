@@ -4,11 +4,13 @@ import com.github.svinoshpatel.api.entities.UserAccount;
 import com.github.svinoshpatel.api.repositories.UserAccountRepository;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class UserAccountService {
 
     private final UserAccountRepository userAccountRepository;

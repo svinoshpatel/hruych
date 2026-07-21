@@ -1,9 +1,8 @@
-package com.github.svinoshpatel.api.dto;
+package com.github.svinoshpatel.api.dto.Auction;
 
+import com.github.svinoshpatel.api.dto.Tier.UpdateTierReq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 import java.time.OffsetDateTime;
