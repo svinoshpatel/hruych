@@ -111,29 +111,27 @@ Docs are generated from the code at runtime:
 - Swagger UI: `http://localhost:8081/swagger-ui/index.html`
 
 ## Getting started
+This project is currently developed and run through **IntelliJ IDEA**;
+the Maven CLI path isn't set up or tested, so use IDEA's run
+configuration rather than `mvnw`.
 
-**Prerequisites:** Java 17+, Docker and Docker Compose. Maven is optional
-— the wrapper (`mvnw`) is included.
+**Prerequisites:** Java 17+, Docker Desktop (or another Docker Compose
+provider), IntelliJ IDEA.
 
-1. Clone the repo.
+1. Clone the repo and open it in IntelliJ (there's an `.idea` folder for
+   it already).
 2. Copy the env template and fill in secrets:
    ```bash
    cp .env.template .env
    ```
-3. Start the local infra from the repo root:
-   ```bash
-   docker compose up -d
-   ```
-   This brings up Postgres 18, Keycloak (pre-loaded with a `main` realm,
-   test users, and a `postman` OAuth client for manual token testing), and
-   LocalStack (which auto-creates the `hruych-bucket` S3 bucket).
-4. Run the API:
-   ```bash
-   cd apps/api
-   ./mvnw spring-boot:run
-   ```
-   Liquibase applies schema migrations automatically on startup.
-5. The API is now available at `http://localhost:8081`, and Keycloak's
+3. Run `ApiApplication` from IntelliJ's Spring Boot run configuration (**-Duser.timezone=UTC** vm option may be needed for DB to work.
+   `spring-boot-docker-compose` will automatically start Postgres,
+   Keycloak (pre-loaded with a `main` realm, test users, and a `postman`
+   OAuth client for manual token testing), and LocalStack (which
+   auto-creates the `hruych-bucket` S3 bucket) — and stop them again when
+   the app shuts down. Liquibase applies schema migrations automatically
+   on startup.
+4. The API is now available at `http://localhost:8081`, and Keycloak's
    admin console at `http://localhost:8080`.
 
 To call authenticated endpoints, obtain a token from Keycloak (the
@@ -143,10 +141,9 @@ endpoint).
 
 ## Running tests
 
-```bash
-cd apps/api
-./mvnw test
-```
+Run via IntelliJ's test runner (right-click `apps/api/src/test` → Run
+Tests). The Maven CLI (`./mvnw test`) isn't part of the tested workflow
+for this project yet.
 
 ## Roadmap / known limitations
 
